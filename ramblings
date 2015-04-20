@@ -1,0 +1,23 @@
+If I am to use hashing for mountain lookup, I'll likely need to use inheritance to access the hash lookup.
+  Maybe encapsulation if it is to return the mountain in the graph.
+    On a similar line of thought, does it matter if the same address is linked to two different structures with different access?
+    Probably not for this assignment.
+      Since the mem address is all I need, I don't actually think encaps. will be needed for this assignment.
+
+Any advantage to polymorphism?
+  Maybe. What functions would they have in common?
+    Mayhaps to separate private and public things, since inheritance don't give a f**k.
+  This seems like a perfect way to land myself squarely (eyyy) in the diamond problem.
+
+classes that I'm likely looking at;
+virtual class polyMoMo (?)
+graphPapa : public polyMomo
+graphChitlet : public graphPapa
+hashMama  : public polyMomo
+hashChitlet : public hashMama
+
+It might be better to encaps two tables in one graph since I think this more than the hash classes will be more of a direct compare.
+  it would be easy to override the call types if inherited though. As far as readability and coding goes, its not much different
+Hash will be more of an inheritance simply because one holds a hash table in each slot while the other holds graph locations
+  I also prefer depth over breadth with my classes since it's easier to layer data access/permeability that way.
+    no sphagletti pls.
