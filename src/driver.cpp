@@ -4,9 +4,7 @@
 
 #include<iostream>
 #include<fstream>
-#include<vector>
-#include"Graph.h"
-#include"HashTable.h"
+#include"Mountain.h"
 
 
 int main(int argc, char* argv[]) {

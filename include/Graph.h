@@ -3,6 +3,8 @@
 
 class Graph_Secondary;
 
+//writing traversal algorithms is going to be a f**king nightmare.
+//but that's fine.
 class Graph_Primary
 {
 public:
@@ -28,7 +30,10 @@ private:
 
 };
 
-class Graph_Secondary /*: public Graph_Primary*/ {
+//since graph_secondary has to function as both a graph root and a vertex, it has some added baggage between graph_primary (through inheritance), and the attribute of a range (name)
+//I chose to store the range name largely because memory is something I have in abundance, and it is the same for all mountains in the range (obviously)
+//This meant that I can get away with one more layer of abstraction.
+class Graph_Secondary : public Graph_Primary {
 public:
 	Graph_Secondary();
 	~Graph_Secondary();
@@ -36,8 +41,10 @@ public:
 protected:
 
 private:
+	std::string rangeName;
+
 	std::vector<Edge*> edge;
-	std::vector<Mountain*> mountain;		//secondary vertices
+	std::vector<Mountain*> mountain;	//secondary vertices WRT primary
 };
 
 #endif //GRAPH_H
