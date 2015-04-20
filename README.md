@@ -10,3 +10,26 @@ So far expanding ideas include...
 4 - Create a color-blot (that's what I'm calling it anyways) .png or .jpeg file from binary where the locations are printed over a not-so-pretty rendering of colorado.
       --has the advantage of being mostly complete from the get-go as coordinates are easy to convert into a more localized cartesian plot.
 5 - I just want to get back to working on 'my' parser, really.
+
+
+# temporarily emptah
+Project Summary
+# It takes data and nibbles on it
+
+How To Run
+# Use your legs
+
+Dependencies
+# A computer.
+
+System Requirements
+# Ability to download RAM
+
+Group Members
+# Just Me
+
+Contributors
+14ers.com for generating the initial ranked .csv file. Nobody likes to type out 53 lines of CSV.
+
+Open Issues/bugs
+# There doesn't seem to be any code to run.
