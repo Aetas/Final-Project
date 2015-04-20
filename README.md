@@ -12,24 +12,24 @@ So far expanding ideas include...
 5 - I just want to get back to working on 'my' parser, really.
 
 
-# temporarily emptah
-Project Summary
-# It takes data and nibbles on it
 
-How To Run
-# Use your legs
+# Project Summary
+It takes data and nibbles on it
 
-Dependencies
-# A computer.
+# How To Run
+Use your legs
 
-System Requirements
-# Ability to download RAM
+# Dependencies
+A computer.
 
-Group Members
-# Just Me
+# System Requirements
+Ability to download RAM
 
-Contributors
+# Group Members
+Just Me
+
+# Contributors
 14ers.com for generating the initial ranked .csv file. Nobody likes to type out 53 lines of CSV.
 
-Open Issues/bugs
-# There doesn't seem to be any code to run.
+# Open Issues/bugs
+There doesn't seem to be any code to run.
