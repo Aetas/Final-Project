@@ -1,1 +1,20 @@
 Everything, alright?
+
+Finish CSV file with edges. If weighted, coords will be needed.
+
+Code files:
+-graph.h
+-graph.cpp
+-hashtable.h
+-hashtable.cpp
+-driver.cpp
+-binary.cpp
+-binary.h
+
+Scripts:
+Makefile
+*.sh (?)
+
+Git stuff:
+documentation
+README
