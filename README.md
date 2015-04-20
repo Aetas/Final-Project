@@ -8,6 +8,7 @@ Also, this means that my .csv file now needs edges. Meh.
 
 
 So far expanding ideas include...
+
 1. Send primary and secondary table locations to arduino to either print or print in binary with LED's.
 
 2. Read in the file initially and then 'compile' it to a binary file for primary use.
