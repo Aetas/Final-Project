@@ -2,6 +2,10 @@
 
 Looking to rewrite/expand the hash table program to include 'perfect' hashing with a singly nested secondary hash table instead of a linked list. However, since that seems kinda boring, I'll probably expand this as I find inspiration of what to do. Also, this is most likely going to be on a list of 14ers since those are much more interesting than movies. And have more information.
 
+After long (read... a few moments) deliberation, I've decided that it would be a lot more fun to implement the 14ers as nested graphs, ordered by range with perfect hashing lookup. If this is too time consuming, unweighted edges are always super easy. The real schtickler will be modifying algorithms to go between peaks. Going between ranges is the exact same thing that was done before.
+
+Also, this means that my .csv file now needs edges. Meh.
+
 
 So far expanding ideas include...
 1. Send primary and secondary table locations to arduino to either print or print in binary with LED's.
