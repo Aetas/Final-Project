@@ -10,7 +10,7 @@
 HashTable_Primary::HashTable_Primary()
 {
 	size = 0;
-	hashTable = new Mountain*[PRIMARY_SIZE];
+	hashTable = new HashTable_Secondary*[PRIMARY_SIZE];
 	for (int i = 0; i < PRIMARY_SIZE; i++)
 		hashTable[i] = nullptr;
 }
@@ -52,25 +52,25 @@ void HashTable_Primary::printInventory()
 	}
 }
 
-void HashTable_Primary::insertMovie(std::string& in_title, int& in_year)
+void HashTable_Primary::insertMountain(std::string& in_name, double& in_elevation)
 {
-	int key = get_hash_key(in_title);
+	int key = get_hash_key(in_name);
 	if (hashTable[key] != nullptr)
-		collision_resolution(in_title, in_year, key);
+		collision_resolution(in_name, in_elevation, key);
 	else
 	{
-		Movie* temp = new Movie(in_title, in_year, key);
+		Mountain* temp = new Mountain(in_name, in_elevation, key);
 		hashTable[key] = temp;
 	}
 	size++;
 }
 
-void HashTable_Primary::deleteMovie(std::string& in_title)
+void HashTable_Primary::deleteMountain(std::string& in_title)
 {
 
 	int key = get_hash_key(in_title);
 
-	if (hashTable[key]->title == in_title && hashTable[key]->next == nullptr)
+	if (hashTable[key]->name == in_title && hashTable[key]->next == nullptr)
 	{
 		delete hashTable[key];
 		hashTable[key] = nullptr;
@@ -78,13 +78,13 @@ void HashTable_Primary::deleteMovie(std::string& in_title)
 		return;
 	}
 
-	Movie* it = hashTable[key];
-	Movie* prev = it;
-	Movie* del = nullptr;
+	Mountain* it = hashTable[key];
+	Mountain* prev = it;
+	Mountain* del = nullptr;
 
 	while (del == nullptr)
 	{
-		if (it->title == in_title)
+		if (it->name == in_title)
 		{
 			del = it;
 			prev->next = del->next;
@@ -125,7 +125,9 @@ void HashTable_Primary::collision_resolution(std::string& in_title, int& in_year
 	prev->next = new_movie;	//if it has not returned yet, make it the last of the chain
 }
 
-Movie* HashTable_Primary::findMovie(std::string& in_title)
+/*
+** Legacy code. Probably will be deleted once I know what is useful and what is not.
+Mountain* HashTable_Primary::findMountain(std::string& in_title)
 {
 	int key = get_hash_key(in_title);
 	//case 1
@@ -138,21 +140,19 @@ Movie* HashTable_Primary::findMovie(std::string& in_title)
 
 	return ans;	//at this point, ans either holds the answer the function call came for, or nullptr, which is the default case for not found
 }
+*/
 
-unsigned int HashTable_Primary::get_size()
-{
+unsigned int HashTable_Primary::get_size() {
 	return size;
 }
 
-bool HashTable_Primary::is_empty()
-{
+bool HashTable_Primary::is_empty() {
 	if (size > 0)
 		return false;
 	return true;
 }
 
-int HashTable_Primary::get_hash_key(std::string& in_title)
-{
+int HashTable_Primary::get_hash_key(std::string& in_title) {
 	int sum = 0;
 	for (std::string::iterator it = in_title.begin(); it != in_title.end(); it++)
 		sum += *it;	//sum ASCII
@@ -166,30 +166,25 @@ int HashTable_Primary::get_hash_key(std::string& in_title)
 	//and any size is a rather large number. So rather than a hack job, I chose to cut the weight and use a compiler macro for that silky smooth action. nns.
 }
 
-Graph_Primary::Graph_Primary()
-{
+Graph_Primary::Graph_Primary() {
 
 }
 
-Graph_Primary::~Graph_Primary()
-{
+Graph_Primary::~Graph_Primary() {
 
 }
 
-void Graph_Primary::addEdge(int& key_o, int& key_d, int weight)
-{
+void Graph_Primary::addEdge(int& key_o, int& key_d, int weight) {
 	Edge* new_edge = new Edge(range[key_d], weight);	//make the edge
 	range[key_o]->edge.push_back(new_edge);			//add to vector
 }
 
-void Graph_Primary::addMountain(std::string& name)
-{
+void Graph_Primary::addMountain(std::string& name) {
 	Mountain* new_Mountain = new Mountain(name);
 	range.push_back(new_Mountain);
 }
 
-void Graph_Primary::printRange()
-{
+void Graph_Primary::printRange() {
 	for (std::vector<Mountain*>::iterator it = range.begin(); it != range.end(); it++)
 	{
 		std::cout << (*it)->district << ":" << (*it)->name << "-->";
@@ -198,8 +193,7 @@ void Graph_Primary::printRange()
 	}
 }
 
-void Graph_Primary::displayEdges(Mountain* home)
-{
+void Graph_Primary::displayEdges(Mountain* home) {
 	if (home->edge.size() > 0)	//if there is an edge (always is, this is for 'bullet proofing')
 	{
 		std::cout << home->edge[0]->v->name;	//cout the first name always
@@ -209,8 +203,7 @@ void Graph_Primary::displayEdges(Mountain* home)
 	}
 }
 
-void Graph_Primary::BFTraversal()
-{
+void Graph_Primary::BFTraversal() {
 	Mountain* current = range[0];	//start at the start? or boulder? writeup sucks.
 
 	std::queue<Mountain*> q;
@@ -236,8 +229,7 @@ void Graph_Primary::BFTraversal()
 	reset_visited();
 }
 
-void Graph_Primary::BFTraversal(std::string& startingCity)
-{
+void Graph_Primary::BFTraversal(std::string& startingCity) {
 	Mountain* current = nullptr;
 	int j = 0;
 	std::vector<Mountain*>::iterator jt = range.begin();
@@ -270,8 +262,7 @@ void Graph_Primary::BFTraversal(std::string& startingCity)
 	reset_visited();
 }
 
-Mountain* Graph_Primary::shortestPath(std::string& o, std::string& d)
-{
+Mountain* Graph_Primary::shortestPath(std::string& o, std::string& d) {
 	Mountain* current = nullptr;
 	Mountain* fin = nullptr;
 
@@ -336,8 +327,7 @@ Mountain* Graph_Primary::shortestPath(std::string& o, std::string& d)
 	return fin;
 }
 
-Mountain* Graph_Primary::shortestDistance(std::string& o, std::string& d)
-{
+Mountain* Graph_Primary::shortestDistance(std::string& o, std::string& d) {
 	//Dijakstra's Algorithm
 	Mountain* temp = nullptr;
 	Mountain* fin = nullptr;
@@ -412,8 +402,7 @@ Mountain* Graph_Primary::shortestDistance(std::string& o, std::string& d)
 	return fin;
 }
 
-void Graph_Primary::reset_visited()
-{
+void Graph_Primary::reset_visited() {
 	for (std::vector<Mountain*>::iterator it = range.begin(); it != range.end(); it++)
 		(*it)->have_visited = false;
 }

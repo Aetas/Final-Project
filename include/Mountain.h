@@ -8,13 +8,24 @@
 
 //Since inheritance is used, making the compiler happy is needed
 //The classes are listed in the order they appear as a way to keep track of them
-class Mountain;
 class ActionJesus;
+class Mountain;
 class HashTable_Primary;
 class HashTable_Secondary;
 class Graph_Primary;
 class Graph_Secondary;
 
+//grandaddy class. Basically just used to easily pass information between graphs and hash tables
+//Name is still up in the air, as one might imagine
+class ActionJesus {
+public:
+	HashTable_Primary hash;
+	Graph_Primary graph;
+protected:
+private:
+};
+
+//EDGE
 struct Edge {
 	//construct/destruct
 	Edge() {
@@ -43,11 +54,12 @@ public:
 	Mountain(std::string&);	//make with name
 	~Mountain();
 
-	bool have_visited;
-	int distance;
+	bool have_visited;		//record keeping
+	int distance;			//record keeping for algs
 
 protected:
 private:
+	//used for tracing paths in route finding algorithms
 	Mountain* previous;
 
 	std::string name;
@@ -55,18 +67,7 @@ private:
 	std::vector<Edge*> edge;
 };
 
-//grandaddy class. Basically just used to easily pass information between graphs and hash tables
-class ActionJesus {
-public:
-
-protected:
-
-private:
-	HashTable_Primary hash;
-	Graph_Primary graph;
-};
-
-//Fair warning - if you look at this page long enough you will invariably start reading 'HashTable' as 'HashTag.' Which is of course, unfortunate.
+//Fair warning - if you look at this page long enough you will invariably start reading 'HashTable' as 'HashTag.' Which is, of course, unfortunate.
 class HashTable_Primary {
 public:
 	HashTable_Primary();
@@ -77,7 +78,7 @@ public:
 	void insertMountain(std::string& in_name, double& in_elevation);//name, elevation
 	void deleteMountain(std::string& in_name);						//name
 	void collision_resolution(std::string& in_name, double& in_elevation, int& key);	//name, year, key
-	Mountain* findMountain(std::string& name);						//name
+	//Mountain* findMountain(std::string& name);						//this will most likely never be used. Ever. The whole idea is to find graph vertices with hash tables.
 
 	unsigned int get_size();
 	bool is_empty();
@@ -87,7 +88,7 @@ protected:
 private:
 	int size;
 	//pointer to pointers for secondary hash table which represents the range that the mountains are found in
-	HashTable_Secondary** hashTable_Range;	//figure out the hash functions, revisit naming convention	
+	HashTable_Secondary** hashTable;	//figure out the hash functions, revisit naming convention	
 
 };
 
@@ -99,7 +100,7 @@ public:
 protected:
 
 private:
-	Mountain** hashTable_Mountain;
+	Mountain** hashTable;
 };
 
 //writing traversal algorithms is going to be a f**king nightmare.
