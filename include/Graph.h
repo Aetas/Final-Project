@@ -1,60 +1,43 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-struct Vertex;
+class Graph_Secondary;
 
-struct Edge
-{
-	//construct/destruct
-	Edge();
-	Edge(Vertex*, int&);
-	~Edge();
-
-	Vertex* v;
-	int weight;
-};
-
-class Vertex : public Mountain {
-public:
-	//construct/destruct
-	Vertex();
-	Vertex(std::string&);	//make with name
-	~Vertex();
-
-	bool have_visited;
-	int district;
-	int distance;
-
-private:
-	Vertex* previous;
-
-	std::string name;
-	std::vector<Edge*> edge;
-};
-
-class Graph
+class Graph_Primary
 {
 public:
 	//construct/destruct
-	Graph();
-	~Graph();
+	Graph_Primary();
+	~Graph_Primary();
 
 	//by name
-	void add_edge(int&, int&, int);	//v1, v2, weight
-	void add_vertex(std::string&);	//name
-	void print_vertices();
-	void display_edges(Vertex*);
+	void addEdge(int&, int&, int);	//v1, v2, weight
+	void addMountain(std::string&);	//name
+	void printRange();
+	void displayEdges(Mountain*);
 	void BFTraversal();
 	void BFTraversal(std::string&);
-	Vertex* shortest_path(std::string&, std::string&);		//
-	Vertex* shortest_distance(std::string&, std::string&);	//return destination-Vertex?  || dijkastra's
-	void assign_districts();
+	Mountain* shortestPath(std::string&, std::string&);		//
+	Mountain* shortestDistance(std::string&, std::string&);	//return destination-Vertex?  || dijkastra's
+	
+protected:
+	void reset_visited();	//protected because why not
 
 private:
-	std::vector<Vertex*> vertices;
-	Vertex* district_log[5][10];
+	std::vector<Graph_Secondary*> range;	//vertices
 
-	void reset_visited();	//private because why not
+};
+
+class Graph_Secondary /*: public Graph_Primary*/ {
+public:
+	Graph_Secondary();
+	~Graph_Secondary();
+	void addEdge();
+protected:
+
+private:
+	std::vector<Edge*> edge;
+	std::vector<Mountain*> mountain;		//secondary vertices
 };
 
 #endif //GRAPH_H
