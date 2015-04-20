@@ -43,7 +43,7 @@ Ability to download RAM. Steep, I know.
 Yours truly
 
 ### Contributors
-[14ers](14ers.com) for generating the initial ranked .csv file. Nobody likes to type out 53 lines of CSV.
+[14ers](14ers.com) for generating the initial ranked .csv file. Nobody likes to type out 53 lines of CSV. Just kidding, I had to type in all the coordinates.
 
 ### Open Issues/bugs
 - There doesn't seem to be any code to run.

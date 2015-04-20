@@ -1,54 +1,54 @@
-Rank,Peak,Elevation,Range
-1,Mt. Elbert,14433,Sawatch
-2,Mt. Massive,14421,Sawatch
-3,Mt. Harvard,14420,Sawatch
-4,Blanca Peak,14345,Sangre de Cristo
-5,La Plata Peak,14336,Sawatch
-6,Uncompahgre Peak,14309,San Juan
-7,Crestone Peak,14294,Sangre de Cristo
-8,Mt. Lincoln,14286,Mosquito
-9,Grays Peak,14270,Front
-10,Mt. Antero,14269,Sawatch
-11,Torreys Peak,14267,Front
-13,Quandary Peak,14265,Tenmile
-12,Castle Peak,14265,Elk
-14,Mt. Evans,14264,Front
-15,Longs Peak,14255,Front
-16,Mt. Wilson,14246,San Juan
-17,Mt. Shavano,14,229,Sawatch
-20,Mt. Princeton,14197,Sawatch
-19,Crestone Needle,14,197,Sangre de Cristo
-18,Mt. Belford,14197,Sawatch
-21,Mt. Yale,14196,Sawatch
-22,Mt. Bross,14172,Mosquito
-23,Kit Carson Peak,14165,Sangre de Cristo
-24,Maroon Peak,14156,Elk
-25,Tabeguache Peak,14155,Sawatch
-26,Mt. Oxford,14153,Sawatch
-27,Mt. Sneffels,14150,San Juan
-28,Mt. Democrat,14148,Mosquito
-29,Capitol Peak,14130,Elk
-30,Pikes Peak,14110,Front
-31,Snowmass Mountain,14092,Elk
-32,Mt. Eolus,14083,San Juan
-33,Windom Peak,14082,San Juan
-34,Challenger Point,14081,Sangre de Cristo
-35,Mt. Columbia,14073,Sawatch
-36,Missouri Mountain,14067,Sawatch
-37,Humboldt Peak,14,064,Sangre de Cristo
-38,Mt. Bierstadt,14,060,Front
-39,Sunlight Peak,14059,San Juan
-40,Handies Peak,14048,San Juan
-41,Culebra Peak,14047,Sangre de Cristo
-42,Ellingwood Point,14042,Sangre de Cristo
-43,Mt. Lindsey,14042,Sangre de Cristo
-44,Little Bear Peak,14037,Sangre de Cristo
-45,Mt. Sherman,14036,Mosquito
-46,Redcloud Peak,14034,San Juan
-47,Pyramid Peak,14018,Elk
-48,Wilson Peak,14017,San Juan
-49,Wetterhorn Peak,14015,San Juan
-50,San Luis Peak,14014,San Juan
-51,Mt. of the Holy Cross,14005,Sawatch
-52,Huron Peak,14003,Sawatch
-53,Sunshine Peak,14001,San Juan
+Rank,Peak,Elevation,Range,Latitude,Longitude
+1,Mt. Elbert,14433,Sawatch,39.1175,N,106.4454,W
+2,Mt. Massive,14421,Sawatch,39.1875,N,106.4757,W
+3,Mt. Harvard,14420,Sawatch,38.9244,N,106.3207,W
+4,Blanca Peak,14345,Sangre de Cristo,37.5775,N,105.4856,W
+5,La Plata Peak,14336,Sawatch,39.0294,N,106.4729,W
+6,Uncompahgre Peak,14309,San Juan,38.0717,N,107.4621,W
+7,Crestone Peak,14294,Sangre de Cristo,37.9668,N,105.5855,W
+8,Mt. Lincoln,14286,Mosquito,39.3515,N,106.1116,W
+9,Grays Peak,14270,Front,39.6339,N,105.8176,W
+10,Mt. Antero,14269,Sawatch,38.6741,N,106.2462,W
+11,Torreys Peak,14267,Front,39.6428,N,105.8212,W
+13,Quandary Peak,14265,Tenmile,39.3972,N,106.1064,W
+12,Castle Peak,14265,Elk,39.0097,N,106.8614,W
+14,Mt. Evans,14264,Front,39.5883,N,105.6438,W
+15,Longs Peak,14255,Front,40.2550,N,105.6151,W
+16,Mt. Wilson,14246,San Juan,37.8391,N,107.9916,W
+17,Mt. Shavano,14,229,Sawatch,38.6193,N,106.2394,W
+20,Mt. Princeton,14197,Sawatch,38.7492,N,106.2424,W
+19,Crestone Needle,14,197,Sangre de Cristo,37.9647,N,105.5766,W
+18,Mt. Belford,14197,Sawatch,38.9606,N,106.3608,W
+21,Mt. Yale,14196,Sawatch,38.8442,N,106.3138,W
+22,Mt. Bross,14172,Mosquito,39.3355,N,106.1076,W
+23,Kit Carson Peak,14165,Sangre de Cristo,37.9797,N,105.6026,W
+24,Maroon Peak,14156,Elk,39.0708,N,106.9890,W
+25,Tabeguache Peak,14155,Sawatch,38.6254,N,106.2509,W
+26,Mt. Oxford,14153,Sawatch,38.9648,N,106.3388,W
+27,Mt. Sneffels,14150,San Juan,38.0038,N,107.7923,W
+28,Mt. Democrat,14148,Mosquito,39.3396,N,106.1400,W
+29,Capitol Peak,14130,Elk,39.1503,N,107.0829,W
+30,Pikes Peak,14110,Front,38.8405,N,105.0442,W
+31,Snowmass Mountain,14092,Elk,39.1187,N,107.0665,W
+32,Mt. Eolus,14083,San Juan,37.6218,N,107.6227,W
+33,Windom Peak,14082,San Juan,37.6212,N,107.5919,W
+34,Challenger Point,14081,Sangre de Cristo,37.9804,N,105.6066,W
+35,Mt. Columbia,14073,Sawatch,38.9038,N,106.2975,W
+36,Missouri Mountain,14067,Sawatch,38.9477,N,106.3786,W
+37,Humboldt Peak,14,064,Sangre de Cristo,37.9762,N,105.5552,W
+38,Mt. Bierstadt,14,060,Front,39.5826,N,105.6688,W
+39,Sunlight Peak,14059,San Juan,37.6274,N,107.5959,W
+40,Handies Peak,14048,San Juan,37.9130,N,107.5044,W
+41,Culebra Peak,14047,Sangre de Cristo,37.1224,N,105.1858,W
+42,Ellingwood Point,14042,Sangre de Cristo,37.5826,N,105.4927,W
+43,Mt. Lindsey,14042,Sangre de Cristo,37.5837,N,105.4449,W
+44,Little Bear Peak,14037,Sangre de Cristo,37.5666,N,105.4972,W
+45,Mt. Sherman,14036,Mosquito,39.2250,N,106.1699,W
+46,Redcloud Peak,14034,San Juan,37.9410,N,107.4219,W
+47,Pyramid Peak,14018,Elk,39.0716,N,106.9501,W
+48,Wilson Peak,14017,San Juan,37.8603,N,107.9847,W
+49,Wetterhorn Peak,14015,San Juan,38.0607,N,107.5109,W
+50,San Luis Peak,14014,San Juan,37.9868,N,106.9313,W
+51,Mt. of the Holy Cross,14005,Sawatch,39.4668,N,106.4817,W
+52,Huron Peak,14003,Sawatch,38.9455,N,106.4380,W
+53,Sunshine Peak,14001,San Juan,37.9228,N,107.4256,W

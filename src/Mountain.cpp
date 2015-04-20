@@ -42,7 +42,7 @@ void HashTable_Primary::printInventory()
 		std::cout << hashTable[i]->title << ":" << hashTable[i]->year << std::endl;
 		if (hashTable[i]->next != nullptr)	//I wanted to do this after the initial cout because I don't want to allocate from the heap in the majority of cases.
 		{
-			Movie* temp = hashTable[i]->next;
+			Mountain* temp = hashTable[i]->next;
 			while (temp != nullptr)			//traverse the linked list
 			{
 				std::cout << temp->title << ":" << temp->year << std::endl;
@@ -157,7 +157,7 @@ int HashTable_Primary::get_hash_key(std::string& in_title) {
 	for (std::string::iterator it = in_title.begin(); it != in_title.end(); it++)
 		sum += *it;	//sum ASCII
 
-	return (sum % 10/*H_TABLE_SIZE*/);	//at this point, I've forgone the idea of adding extra baggage to let user redefine the size, 
+	return (sum % 10/*H_TABLE_SIZE*/);	//at this point, I've forgone the idea of adding extra baggage to let user redefine the size,
 	//because that happens before the compiler runs anyhow, so changing the macro is just as easy, if not easier
 	//the other option is table_size, which would hold the table size passed to the constructor just for hash key use
 	//the main reason I cared about a simple 8 bytes floating around my class is not because of the space, but because
@@ -304,7 +304,7 @@ Mountain* Graph_Primary::shortestPath(std::string& o, std::string& d) {
 	current->have_visited = true;	//initial
 	current->distance = 0;			//no edges.
 	q.push(current);
-	path.push(current);	//path starts 
+	path.push(current);	//path starts
 
 	while (!q.empty())
 	{
