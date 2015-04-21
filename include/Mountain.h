@@ -6,6 +6,15 @@
 #include<string>
 #include<vector>
 
+/*
+WIP naming conventions
+	If it is an attribute of an object, and underscore is used to denote object-attribute relation <object>_<attribute> is used. 
+	If it is a method or unique attribute, no underscore is used and caps denote words.
+	Whole words are prefered over abbreviations
+	Caps are used in object declarations so a mountain can be declared as Mountain* mountain = new Mountain();
+*/
+
+
 //Since inheritance is used, making the compiler happy is needed
 //The classes are listed in the order they appear as a way to keep track of them
 class ActionJesus;
@@ -15,29 +24,58 @@ class HashTable_Secondary;
 class Graph_Primary;
 class Graph_Secondary;
 
+//in general, naming conventions could have been more clear from the start. It's been more work than it's worth to convert old things to new conventions
+
+
 //grandaddy class. Basically just used to easily pass information between graphs and hash tables
 //Name is still up in the air, as one might imagine
 class ActionJesus {
 public:
 	HashTable_Primary hash;
 	Graph_Primary graph;
+	//virtual add_mountain	(?)		//inherit both and override so that I do not have to call add a million times to update both hash and graph
+	//virtual remove_mountain (?)	//
 protected:
 private:
 };
 
+//Are two edge types needed?
+//The reason a second would be needed is to link ranges. Now if I don't plan on traversing ranges, then this is slightly useless.
+//However, if I don't plan on using the range graph, then what's the point of using a graph structure?
+//Probs need Edge_Mountain and Edge_Range. Molto bene.
 //EDGE
-struct Edge {
+struct Edge_Range {
 	//construct/destruct
-	Edge() {
+	Edge_Range() {
 		next = nullptr;
 		weight = -1;
 	};
 
-	Edge(Mountain* destination, int& in_weight) {
+	Edge_Range(Mountain* destination, int& in_weight) {
 		next = destination;
 	};
 
-	~Edge() {
+	~Edge_Range() {
+		if (next != nullptr)
+			delete next;
+	};
+
+	Mountain* next;
+	int weight;
+};
+
+struct Edge_Mountain {
+	//construct/destruct
+	Edge_Mountain() {
+		next = nullptr;
+		weight = -1;
+	};
+
+	Edge_Mountain(Mountain* destination, int& in_weight) {
+		next = destination;
+	};
+
+	~Edge_Mountain() {
 		if (next != nullptr)
 			delete next;
 	};
@@ -62,9 +100,14 @@ private:
 	//used for tracing paths in route finding algorithms
 	Mountain* previous;
 
+	struct Coordinates {
+		char N_S, E_W;
+		double latitude, longitude;
+	} coordinates;
+
 	std::string name;
 	double elevation;
-	std::vector<Edge*> edge;
+	std::vector<Edge_Mountain*> edge;
 };
 
 //Fair warning - if you look at this page long enough you will invariably start reading 'HashTable' as 'HashTag.' Which is, of course, unfortunate.
@@ -78,7 +121,7 @@ public:
 	void insertMountain(std::string& in_name, double& in_elevation);//name, elevation
 	void deleteMountain(std::string& in_name);						//name
 	void collision_resolution(std::string& in_name, double& in_elevation, int& key);	//name, year, key
-	//Mountain* findMountain(std::string& name);						//this will most likely never be used. Ever. The whole idea is to find graph vertices with hash tables.
+	Mountain* findMountain(std::string& name);						//this will most likely never be used. Ever. The whole idea is to find graph vertices with hash tables.
 
 	unsigned int get_size();
 	bool is_empty();
@@ -119,12 +162,12 @@ public:
 	void BFTraversal();
 	void BFTraversal(std::string&);
 	Mountain* shortestPath(std::string&, std::string&);		//
-	Mountain* shortestDistance(std::string&, std::string&);	//return destination-Vertex?  || dijkastra's
 
 protected:
 	void reset_visited();	//protected because why not
 
 private:
+	std::vector<Edge_Range*> Prim_edge;
 	std::vector<Graph_Secondary*> range;	//vertices
 
 };
@@ -137,12 +180,14 @@ public:
 	Graph_Secondary();
 	~Graph_Secondary();
 	void addEdge();
+		//shortest distance is only really applicable to mountain to mountain, since ranges are so large there's no appreciable way to represent distances between two
+	Mountain* shortestDistance(std::string&, std::string&);	//return destination-Vertex?  || dijkastra's
 protected:
 
 private:
 	std::string rangeName;
 
-	std::vector<Edge*> edge;
+	std::vector<Edge_Mountain*> edge;
 	std::vector<Mountain*> mountain;	//secondary vertices WRT primary
 };
 
