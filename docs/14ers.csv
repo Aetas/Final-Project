@@ -15,9 +15,9 @@ Rank,Peak,Elevation,Range,Latitude,Longitude
 14,Mt. Evans,14264,Front,39.5883,N,105.6438,W
 15,Longs Peak,14255,Front,40.2550,N,105.6151,W
 16,Mt. Wilson,14246,San Juan,37.8391,N,107.9916,W
-17,Mt. Shavano,14,229,Sawatch,38.6193,N,106.2394,W
+17,Mt. Shavano,14229,Sawatch,38.6193,N,106.2394,W
 20,Mt. Princeton,14197,Sawatch,38.7492,N,106.2424,W
-19,Crestone Needle,14,197,Sangre de Cristo,37.9647,N,105.5766,W
+19,Crestone Needle,14197,Sangre de Cristo,37.9647,N,105.5766,W
 18,Mt. Belford,14197,Sawatch,38.9606,N,106.3608,W
 21,Mt. Yale,14196,Sawatch,38.8442,N,106.3138,W
 22,Mt. Bross,14172,Mosquito,39.3355,N,106.1076,W
@@ -35,8 +35,8 @@ Rank,Peak,Elevation,Range,Latitude,Longitude
 34,Challenger Point,14081,Sangre de Cristo,37.9804,N,105.6066,W
 35,Mt. Columbia,14073,Sawatch,38.9038,N,106.2975,W
 36,Missouri Mountain,14067,Sawatch,38.9477,N,106.3786,W
-37,Humboldt Peak,14,064,Sangre de Cristo,37.9762,N,105.5552,W
-38,Mt. Bierstadt,14,060,Front,39.5826,N,105.6688,W
+37,Humboldt Peak,14064,Sangre de Cristo,37.9762,N,105.5552,W
+38,Mt. Bierstadt,14060,Front,39.5826,N,105.6688,W
 39,Sunlight Peak,14059,San Juan,37.6274,N,107.5959,W
 40,Handies Peak,14048,San Juan,37.9130,N,107.5044,W
 41,Culebra Peak,14047,Sangre de Cristo,37.1224,N,105.1858,W
