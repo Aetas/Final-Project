@@ -21,3 +21,7 @@ It might be better to encaps two tables in one graph since I think this more tha
 Hash will be more of an inheritance simply because one holds a hash table in each slot while the other holds graph locations
   I also prefer depth over breadth with my classes since it's easier to layer data access/permeability that way.
     no sphagletti pls.
+
+***I might just remove the nested graph bit. Not because of difficulty, but there isn't really any reason to have 
+a graph of something that has ambiguous borders, and thus no way to weight the edges, or even make edges.
+Probably splitting up edges and information into two files. Maybe both binary. Meh.
