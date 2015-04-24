@@ -15,10 +15,23 @@ void readFile(std::ifstream& inFile/*, ActionJesus& data*/);
 
 int main(int argc, char* argv[]) {
 
-	HashMap<Mountain> hashMap;
+	HashMap* hashMap = new HashMap;
 	int one = 1;
 	double two = 2;
-	Mountain* temp = hashMap[one][1][1][1][1];
+//	Mountain* temp = hashMap[one][one];
+
+	string tmpName = "Action Jesus";
+	int* keys = nullptr;
+	hashMap->populateKeys(keys, tmpName);
+	if (*keys == 1)
+		cout << "cool";
+	else
+		cout << "radical";
+	keys++;
+	if (*keys == 1)
+		cout << "that worked. Somehow.";
+	else
+		cout << "Like I thought.";
 
 	//Read in nodes
 	std::ifstream inFile;

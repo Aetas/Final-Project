@@ -64,38 +64,33 @@ Graph::~Graph() {
 
 }
 
-/*
+
 //HASHMAP
 HashMap::HashMap() {
-	hashTable = new HashTable_Perfect<HashTable_Perfect<Mountain>>*[PRIMARY_SIZE];
+	hashTable = new HashTable_Perfect<Mountain>*[PRIMARY_SIZE];
 	for (unsigned int i = 0; i < PRIMARY_SIZE; i++) {
 		hashTable[i] = nullptr;
 	}
 }
 
 HashMap::~HashMap() {
-	if (hashTable != nullptr)
-	//if (size > 0) ?
+	if (size > 0)
 		delete[]hashTable;
 }
 
 
 void HashMap::insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew) {
 	Mountain* mountain = new Mountain(in_rank, in_name, in_elevation, in_range, in_lat, ns, in_long, ew);
-//	unsigned int key_pair[2];
-	//key_pair[0] = getKey_Primary(in_name);
-	//key_pair[1] = getKey_Secondary(in_name);
-
-	//hashTable[key_pair[0]]->hashTable[key_pair[1]] = mountain;
+	unsigned int* keys = nullptr;
+	keys = populateKeys(in_name);
+	*this[*keys][*++keys] = *mountain;
 }
 
 
 void HashMap::deleteMountain(std::string& in_name) {
-//	unsigned int key_pair[2];
-	//key_pair[0] = getKey_Primary(in_name);
-	//key_pair[1] = hashTable[key_pair[0]]->getKey_Secondary(in_name);
-	std::cout << "";
+	unsigned int* keys = nullptr;
+	keys = populateKeys(in_name);
+	delete this[*keys][*++keys];
 
 }
 
-*/

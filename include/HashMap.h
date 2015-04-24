@@ -1,7 +1,7 @@
 #ifndef MOUNTAIN_H
 #define MOUNTAIN_H
-#define PRIMARY_SIZE 10
-#define SECONDARY_SIZE 10
+#define PRIMARY_SIZE 4
+#define SECONDARY_SIZE 17
 #define MAX_DISTANCE 9999999
 
 #include<string>
@@ -93,50 +93,83 @@ private:
 };
 
 //---------HASHTABLE_PERFECT---------//
-//SIDE PROJECT -- TRYING TO SEE IF I CAN TEMPLATE A HASHTABLE CLASS
-//CAPSLOCK IS CRUISE CONTROLL FOR COOL.
+//My perfect hashtable w/ templates
 template<class T> class HashTable_Perfect {
 public:
-	HashTable_Perfect() {};
-	HashTable_Perfect(int& in_size) {};
-	~HashTable_Perfect() {};
+	HashTable_Perfect() {
+		size = 0;
+		hashTable = new T*[SECONDARY_SIZE];
+		for (unsigned int i = 0; i < SECONDARY_SIZE; i++)
+			hashTable[i] = nullptr;
+	}
+	HashTable_Perfect(int s_size) {				//specify size of second table
+		size = 0;
+		hashtable = new T*[s_size];
+	}
+	~HashTable_Perfect() {
+		if (size > 0)
+			delete[]hashTable;
+	}
 
-	void printInventory();
-	unsigned int get_size();
-	bool is_empty();
-
+	void printInventory() {
+		if (size == 0) {
+			std::cout << "empty" << std::endl;	//I'm only tolerating a print in this function because it is a print function.
+			return;
+		}
+		for (int i = 0; i < H_TABLE_SIZE; i++) {
+			if (hashTable[i] == nullptr)
+				continue;	//skip rest
+			std::cout << hashTable[i]->title << ":" << hashTable[i]->year << std::endl;
+		}
+	}
+	unsigned int get_size() {
+		return size;
+	}
+	bool is_empty() {
+		return (size == 0);
+	}
 	template<typename K>
 	T* operator[](K key) {
-		return (this->hashTable[key]);
+		return this->hashTable[key];
 	}
+
 	T** hashTable;
+
+	//I'll come back top this later when it can determine it's own size
+	unsigned int*& populateKeys(std::string& in_name) {
+		unsigned int* keys = new unsigned int[2];
+		int sum = 0;
+		for (unsigned int i = 0; i < in_name.size(); i++)
+			sum += in_name[i];
+		keys[0] = sum % PRIMARY_SIZE;
+		keys[1] = keys[0] % SECONDARY_SIZE;
+		return keys;
+	}
 protected:
 	unsigned int size;
-	int getKey_Primary(std::string& in_name);
-	int getKey_Secondary(std::string& in_name);
 private:
 };
 
 //---------HASHMAP---------//
-template<class T>
-class HashMap : public HashTable_Perfect<T>, public Graph {
+//to template... or not to template...
+//I'm removing the template bit for now because the descision is hindering progress. I can always come back and convert/paste in templates if I need to.
+//template<class T>
+class HashMap : public HashTable_Perfect<Mountain>, public Graph {
 public:
 	HashMap() {};
 	~HashMap() {};
-
-	template<typename K>
-	HashTable_Perfect<HashTable_Perfect<Mountain>>* operator[](K key) {
-		return hashTable[key];
-	};
 
 	void insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew);
 	void deleteMountain(std::string& in_name);
 	
 	Mountain* findMountain(std::string& in_name);
 
+	unsigned int size_of();
+	bool is_empty();
+
 protected:
 private:
-	HashTable_Perfect<T>** hashTable;
+	HashTable_Perfect<Mountain>** hashTable;
 	std::vector<Edge*> edge;
 	std::vector<Mountain*> range;	//vertices
 };
