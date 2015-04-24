@@ -16,11 +16,12 @@ void readFile(std::ifstream& inFile/*, ActionJesus& data*/);
 int main(int argc, char* argv[]) {
 
 	HashMap hashMap;
-	//Mountain* temp = hashMap[1][1];
+	//int one = 1, two = 2;
+	//Mountain* temp = hashMap[one][two];
 
 	//Read in nodes
 	std::ifstream inFile;
-	if (argc > 0) {
+	if (argc > 1) {
 		inFile.open(argv[1]);
 		if (inFile.is_open()) {
 			readFile(inFile);

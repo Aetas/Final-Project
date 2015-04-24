@@ -78,8 +78,10 @@ public:
 	unsigned int get_size();
 	bool is_empty();
 
-	template<typename K>
-	T* operator[](K key);	//this will need to be revisited
+	//template<typename K>
+	T* operator[](int key) {
+		return hashTable[key];
+	}
 	T** hashTable;
 protected:
 	unsigned int size;
@@ -101,8 +103,10 @@ public:
 	unsigned int get_size();
 	bool is_empty();
 
-	template<typename K>
-	T* operator[](K key);
+	//template<typename K>
+	T* operator[](int key) {
+		return hashTable[key];
+	}
 	T** hashTable;
 protected:
 	int getKey_Primary(std::string& in_name);
@@ -141,13 +145,15 @@ private:
 };
 
 //---------HASHMAP---------//
-class HashMap : public HashTable_Perfect<HashTable<Mountain>>, public Graph {
+class HashMap : /*public HashTable_Perfect<HashTable<Mountain>>,*/ public Graph {
 public:
 	HashMap();
 	~HashMap();
 
-	template<typename K>
-	HashTable_Perfect* operator[](K key);	//this will need to be revisited
+	template<class T/*, typename K*/>
+	HashTable_Perfect<T>* operator[](int key) {
+		return hashTable[key];
+	};
 
 	void insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew);
 	void deleteMountain(std::string& in_name);
