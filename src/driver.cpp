@@ -4,7 +4,7 @@
 
 #include<iostream>
 #include<fstream>
-#include"Mountain.h"
+#include"HashMap.h"
 
 using std::string;
 using std::cout;
@@ -15,8 +15,10 @@ void readFile(std::ifstream& inFile/*, ActionJesus& data*/);
 
 int main(int argc, char* argv[]) {
 
-	//file read
-		//file write? - sepparate program
+	HashMap hashMap;
+	//Mountain* temp = hashMap[1][1];
+
+	//Read in nodes
 	std::ifstream inFile;
 	if (argc > 0) {
 		inFile.open(argv[1]);
@@ -34,7 +36,7 @@ int main(int argc, char* argv[]) {
 			readFile(inFile);
 		}
 	}
-	else {
+	else {	//else no argument was supplied
 		string fileName = "";
 			cout << "\n Please enter the name of the desired CSV file: " << endl;
 			getline(cin, fileName);
@@ -45,6 +47,7 @@ int main(int argc, char* argv[]) {
 			}
 			readFile(inFile);
 	}
+	//end read in nodes
 	inFile.close();	//close in the end
 	//error handling
 
