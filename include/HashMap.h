@@ -21,7 +21,8 @@ WIP naming conventions
 class Edge;
 class Mountain;
 template<class T> class HashTable_Perfect;
-template<class T> class HashTable;
+class Graph;
+//class HashMap;
 
 //---------EDGE---------//
 //This became a class out of chance. Largely because I had the construct/destruct inlined, 
@@ -65,60 +66,6 @@ private:
 	std::vector<Edge*> edge;
 };
 
-//---------HASHTABLE_PERFECT---------//
-//SIDE PROJECT -- TRYING TO SEE IF I CAN TEMPLATE A HASHTABLE CLASS
-//CAPSLOCK IS CRUISE CONTROLL FOR COOL.
-template<class T> class HashTable_Perfect {
-public:
-	HashTable_Perfect() {};
-	HashTable_Perfect(int& in_size) {};
-	~HashTable_Perfect() {};
-
-	void printInventory();
-	unsigned int get_size();
-	bool is_empty();
-
-	template<typename K>
-	T* operator[](K key) {
-		return hashTable[key];
-	}
-	T** hashTable;
-protected:
-	unsigned int size;
-	int getKey_Primary(std::string& in_name);
-	int getKey_Secondary(std::string& in_name);
-private:
-};
-
-//---------HASHTABLE---------//
-//Fair warning - if you look at this page long enough you will invariably start reading 'HashTable' as 'HashTag.' Which is, of course, unfortunate.
-//can I template<class T> this hashtable to ditch hashtable_secondary? I have no idea. I don't think this is the right place for it
-/*
-template<class T> class HashTable {
-public:
-	HashTable() {};
-	HashTable(int& in_size) {};
-	~HashTable() {};
-
-	void printInventory();
-	unsigned int get_size();
-	bool is_empty();
-
-	template<typename K>
-	T* operator[](K key) {
-		return hashTable[key];
-	}
-	T** hashTable;
-protected:
-	int getKey_Primary(std::string& in_name);
-	int getKey_Secondary(std::string& in_name);
-	unsigned int size;
-
-private:
-	//double pointer to signify that hashTable will instanciate pointers rather than a block of memory
-	//Mountain** hashTable;
-};*/
-
 //---------GRAPH---------//
 //writing traversal algorithms is going to be a f**king nightmare.
 //but that's fine.
@@ -145,6 +92,31 @@ private:
 	std::vector<Mountain*> range;
 };
 
+//---------HASHTABLE_PERFECT---------//
+//SIDE PROJECT -- TRYING TO SEE IF I CAN TEMPLATE A HASHTABLE CLASS
+//CAPSLOCK IS CRUISE CONTROLL FOR COOL.
+template<class T> class HashTable_Perfect {
+public:
+	HashTable_Perfect() {};
+	HashTable_Perfect(int& in_size) {};
+	~HashTable_Perfect() {};
+
+	void printInventory();
+	unsigned int get_size();
+	bool is_empty();
+
+	template<typename K>
+	T* operator[](K key) {
+		return (this->hashTable[key]);
+	}
+	T** hashTable;
+protected:
+	unsigned int size;
+	int getKey_Primary(std::string& in_name);
+	int getKey_Secondary(std::string& in_name);
+private:
+};
+
 //---------HASHMAP---------//
 template<class T>
 class HashMap : public HashTable_Perfect<T>, public Graph {
@@ -153,7 +125,7 @@ public:
 	~HashMap() {};
 
 	template<typename K>
-	HashTable_Perfect<T>* operator[](K key) {
+	HashTable_Perfect<HashTable_Perfect<Mountain>>* operator[](K key) {
 		return hashTable[key];
 	};
 
@@ -164,7 +136,7 @@ public:
 
 protected:
 private:
-	HashTable_Perfect<HashTable_Perfect<T>>** hashTable;
+	HashTable_Perfect<T>** hashTable;
 	std::vector<Edge*> edge;
 	std::vector<Mountain*> range;	//vertices
 };
