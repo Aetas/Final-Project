@@ -22,6 +22,11 @@ Hash will be more of an inheritance simply because one holds a hash table in eac
   I also prefer depth over breadth with my classes since it's easier to layer data access/permeability that way.
     no sphagletti pls.
 
-***I might just remove the nested graph bit. Not because of difficulty, but there isn't really any reason to have 
+***I might just remove the nested graph bit. Not because of difficulty, but there isn't really any reason to have
 a graph of something that has ambiguous borders, and thus no way to weight the edges, or even make edges.
 Probably splitting up edges and information into two files. Maybe both binary. Meh.
+
+**UPDATE:
+I did remove the nested graph bit and I am quite proud of myself for removing needlessly complicated B.S.
+when it is so easy to just keep it because it is cool and fun + wow factor. But it was ultimately useless,
+so it would wow exactly nobody I would be trying to impress.¯\_(ツ)_/¯

@@ -25,6 +25,8 @@ So far expanding ideas include...
 
 5. I just want to get back to working on 'my' parser, really.
 
+#### In defense of multiple inheritance
+I chose to use a class (HashMap) that utilizes multiple inheritance (of Graph and HashTable) over composition based on the idea that HashMap is expected to function like both a graph and a hash table in every sense, choosing which structure to favor based on strengths. In other words, HashMap is expected to have the ability to be used in place of a graph or hash table in every application, lending to inheritance.
 
 
 ### Project Summary
@@ -43,7 +45,10 @@ Ability to download RAM. Steep, I know.
 Yours truly
 
 ### Contributors
-[14ers](14ers.com) for generating the initial ranked .csv file. Nobody likes to type out 53 lines of CSV. Just kidding, I had to type in all the coordinates.
+[14ers](14ers.com) for generating the initial ranked .csv file. Nobody likes to type out 53 lines of CSV. Just kidding, I had to type in all of the coordinates.
 
 ### Open Issues/bugs
 - There doesn't seem to be any code to run.
+
+### Contributing
+Namespaces are never declared in header files, while 'using std::' notation is preferred in drivers.
