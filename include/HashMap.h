@@ -70,16 +70,16 @@ private:
 //CAPSLOCK IS CRUISE CONTROLL FOR COOL.
 template<class T> class HashTable_Perfect {
 public:
-	HashTable_Perfect();
-	HashTable_Perfect(int& in_size);
-	~HashTable_Perfect();
+	HashTable_Perfect() {};
+	HashTable_Perfect(int& in_size) {};
+	~HashTable_Perfect() {};
 
 	void printInventory();
 	unsigned int get_size();
 	bool is_empty();
 
-	//template<typename K>
-	T* operator[](int key) {
+	template<typename K>
+	T* operator[](K key) {
 		return hashTable[key];
 	}
 	T** hashTable;
@@ -93,18 +93,19 @@ private:
 //---------HASHTABLE---------//
 //Fair warning - if you look at this page long enough you will invariably start reading 'HashTable' as 'HashTag.' Which is, of course, unfortunate.
 //can I template<class T> this hashtable to ditch hashtable_secondary? I have no idea. I don't think this is the right place for it
+/*
 template<class T> class HashTable {
 public:
-	HashTable();
-	HashTable(int& in_size);
-	~HashTable();
+	HashTable() {};
+	HashTable(int& in_size) {};
+	~HashTable() {};
 
 	void printInventory();
 	unsigned int get_size();
 	bool is_empty();
 
-	//template<typename K>
-	T* operator[](int key) {
+	template<typename K>
+	T* operator[](K key) {
 		return hashTable[key];
 	}
 	T** hashTable;
@@ -116,7 +117,7 @@ protected:
 private:
 	//double pointer to signify that hashTable will instanciate pointers rather than a block of memory
 	//Mountain** hashTable;
-};
+};*/
 
 //---------GRAPH---------//
 //writing traversal algorithms is going to be a f**king nightmare.
@@ -145,13 +146,14 @@ private:
 };
 
 //---------HASHMAP---------//
-class HashMap : /*public HashTable_Perfect<HashTable<Mountain>>,*/ public Graph {
+template<class T>
+class HashMap : public HashTable_Perfect<T>, public Graph {
 public:
-	HashMap();
-	~HashMap();
+	HashMap() {};
+	~HashMap() {};
 
-	template<class T/*, typename K*/>
-	HashTable_Perfect<T>* operator[](int key) {
+	template<typename K>
+	HashTable_Perfect<T>* operator[](K key) {
 		return hashTable[key];
 	};
 
@@ -162,7 +164,7 @@ public:
 
 protected:
 private:
-	HashTable_Perfect<HashTable<Mountain>>** hashTable;
+	HashTable_Perfect<HashTable_Perfect<T>>** hashTable;
 	std::vector<Edge*> edge;
 	std::vector<Mountain*> range;	//vertices
 };

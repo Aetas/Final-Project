@@ -15,7 +15,7 @@ void readFile(std::ifstream& inFile/*, ActionJesus& data*/);
 
 int main(int argc, char* argv[]) {
 
-	HashMap hashMap;
+	HashMap<HashTable_Perfect<Mountain>> hashMap;
 	//int one = 1, two = 2;
 	//Mountain* temp = hashMap[one][two];
 
