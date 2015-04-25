@@ -64,7 +64,6 @@ Graph::~Graph() {
 
 }
 
-
 //HASHMAP
 HashMap::HashMap() {
 	hashTable = new HashTable_Perfect<Mountain>*[PRIMARY_SIZE];
@@ -81,16 +80,27 @@ HashMap::~HashMap() {
 
 void HashMap::insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew) {
 	Mountain* mountain = new Mountain(in_rank, in_name, in_elevation, in_range, in_lat, ns, in_long, ew);
-	unsigned int* keys = nullptr;
-	keys = populateKeys(in_name);
-	*this[*keys][*++keys] = *mountain;
+	Keys<2> k = populateKeys(in_name);
+	*this[k[0]][k[1]] = *mountain;	//make sure this works. Pointers, man.
+	vertices.push_back(mountain);	//add to graph
+	size++;
 }
 
 
 void HashMap::deleteMountain(std::string& in_name) {
-	unsigned int* keys = nullptr;
-	keys = populateKeys(in_name);
-	delete this[*keys][*++keys];
-
+	Keys<2> k = populateKeys(in_name);
+	if (this[k[1]][k[2]] != nullptr) {	//make sure there is actually somehting there before trying to delete
+		delete this[k[1]][k[2]];
+		size--;
+	}
 }
 
+Mountain* HashMap::findMountain(std::string& in_name) {
+	Keys<2> k = this->populateKeys(in_name);
+	return this[k[0]][k[1]];
+}
+
+void HashMap::addEdge(Keys<2>& origin, Keys<2>& destination, double& weight) {
+	Edge* new_edge = new Edge(this[origin[0]][origin[1]], weight);
+	
+}

@@ -11,24 +11,23 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-void readFile(std::ifstream& inFile/*, ActionJesus& data*/);
+void readFile(std::ifstream& inFile, HashMap* hm);
 
 int main(int argc, char* argv[]) {
 
 	HashMap* hashMap = new HashMap;
+
 	int one = 1;
 	double two = 2;
-//	Mountain* temp = hashMap[one][one];
+	Mountain* temp = hashMap[one][one];
 
 	string tmpName = "Action Jesus";
-	int* keys = nullptr;
-	hashMap->populateKeys(keys, tmpName);
-	if (*keys == 1)
+	Keys<2> k = hashMap->populateKeys(tmpName);
+	if (k[0] == 1)
 		cout << "cool";
 	else
 		cout << "radical";
-	keys++;
-	if (*keys == 1)
+	if (k[1] == 1)
 		cout << "that worked. Somehow.";
 	else
 		cout << "Like I thought.";
@@ -38,7 +37,7 @@ int main(int argc, char* argv[]) {
 	if (argc > 1) {
 		inFile.open(argv[1]);
 		if (inFile.is_open()) {
-			readFile(inFile);
+			readFile(inFile, hashMap);
 		}
 		else {
 			string fileName = "";
@@ -48,7 +47,7 @@ int main(int argc, char* argv[]) {
 				getline(cin, fileName);
 				inFile.open(fileName.c_str());
 			}
-			readFile(inFile);
+			readFile(inFile, hashMap);
 		}
 	}
 	else {	//else no argument was supplied
@@ -60,10 +59,11 @@ int main(int argc, char* argv[]) {
 				cout << " The file either could not be opened or found." << endl;
 				return 0;
 			}
-			readFile(inFile);
-	}
-	//end read in nodes
+			readFile(inFile, hashMap);
+	}//end read in nodes
+
 	inFile.close();	//close in the end
+
 	//error handling
 
 
@@ -121,7 +121,7 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
-void readFile(std::ifstream& inFile) {
+void readFile(std::ifstream& inFile, HashMap* hm) {
 	//FILE STRUCTURE:
 	//Rank,Peak name, Elevation, Range, Latitude, Longitude
 	//Ex: "39,Sunlight Peak,14059,San Juan,37.6274,N,107.5959,W"
@@ -152,6 +152,6 @@ void readFile(std::ifstream& inFile) {
 		// Build edges sepparately? Hashing has the advantage of ditching O(n) lookup, so adding them after simplifies 
 		// this program and makes each function more independant and standalone. 
 		// Would take O(2+e) if e is the number of edges to be added as opposed to O(e) if done here.
-		//chunk_o_data->addMountain(/*long list of shit*/);
+		hm->insertMountain(rank, name, elevation, range, latitude, N_S, longitude, E_W);
 	}
 }

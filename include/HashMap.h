@@ -24,13 +24,30 @@ template<class T> class HashTable_Perfect;
 class Graph;
 //class HashMap;
 
+//It was ugly and hard to keep track of passing pointers to integer arrays around to hold keys
+//so I made this struct to simplify things, though it might not seem like it.
+//the template is to support nesting to any degree, as it makes as many keys as specifiec.
+//Unfortunately, my keygen function now falls short of it's key container
+template<unsigned int T> struct Keys {
+	Keys(){};
+	~Keys(){};
+	unsigned int key[T];
+	void operator=(const Keys& in_key) {
+		this->key[0] = in_key[0];
+		this->key[1] = in_key[1];
+	}
+	unsigned int& operator[](int k) {
+		return key[k];
+	}
+};
+
 //---------EDGE---------//
 //This became a class out of chance. Largely because I had the construct/destruct inlined, 
 //but it needed a complete mountain type to call delete on. So now not so much
 class Edge {
 	//construct/destruct
 	Edge();
-	Edge(Mountain* destination, int& in_weight);
+	Edge(Mountain* destination, double& in_weight);
 	~Edge();
 
 	Mountain* next;
@@ -76,7 +93,7 @@ public:
 	~Graph();
 
 	//by name
-	void addEdge(int&, int&, int);	//v1, v2, weight
+	virtual void addEdge(Keys<2>& origin, Keys<2>& destination, double& weight);	//v1, v2, weight
 	void displayEdges(Mountain*);
 	void BFTraversal();
 	void BFTraversal(std::string&);
@@ -84,12 +101,10 @@ public:
 
 protected:
 	void reset_visited();	//protected because why not
-
+	std::vector<Mountain*> vertices;
 private:
 	//graph is sudo virtual/interface, I'm simply leaving private things so that I can write the functions for graph
 	//and have them implement in HashMap
-	std::vector<Edge*> Prim_edge;
-	std::vector<Mountain*> range;
 };
 
 //---------HASHTABLE_PERFECT---------//
@@ -102,7 +117,7 @@ public:
 		for (unsigned int i = 0; i < SECONDARY_SIZE; i++)
 			hashTable[i] = nullptr;
 	}
-	HashTable_Perfect(int s_size) {				//specify size of second table
+	HashTable_Perfect(int s_size) {		//specify size of second table, likely never used since arrays cant be given constructor arguments
 		size = 0;
 		hashtable = new T*[s_size];
 	}
@@ -122,7 +137,7 @@ public:
 			std::cout << hashTable[i]->title << ":" << hashTable[i]->year << std::endl;
 		}
 	}
-	unsigned int get_size() {
+	unsigned int size_of() {
 		return size;
 	}
 	bool is_empty() {
@@ -133,18 +148,19 @@ public:
 		return this->hashTable[key];
 	}
 
-	T** hashTable;
-
 	//I'll come back top this later when it can determine it's own size
-	unsigned int*& populateKeys(std::string& in_name) {
-		unsigned int* keys = new unsigned int[2];
+	//though it might be easiest to just have keys templated with the nesting depth specified at construction
+	Keys<2> populateKeys(std::string& in_name) {
+		Keys<2> k;
 		int sum = 0;
 		for (unsigned int i = 0; i < in_name.size(); i++)
 			sum += in_name[i];
-		keys[0] = sum % PRIMARY_SIZE;
-		keys[1] = keys[0] % SECONDARY_SIZE;
-		return keys;
+		k.key[0] = sum % PRIMARY_SIZE;
+		k.key[1] = k.key[0] % SECONDARY_SIZE;
+		return k;
 	}
+
+	T** hashTable;
 protected:
 	unsigned int size;
 private:
@@ -156,22 +172,28 @@ private:
 //template<class T>
 class HashMap : public HashTable_Perfect<Mountain>, public Graph {
 public:
-	HashMap() {};
-	~HashMap() {};
+	HashMap();
+	~HashMap();
 
 	void insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew);
 	void deleteMountain(std::string& in_name);
+	void addEdge(Keys<2>& origin, Keys<2>& destination, double& weight);
 	
 	Mountain* findMountain(std::string& in_name);
 
-	unsigned int size_of();
-	bool is_empty();
+	unsigned int size_of() {
+		return size;
+	}
+	bool is_empty() {
+		return (size == 0);
+	}
 
 protected:
 private:
+	//I might move this back into protected of hashtable_perfect later
+	//I'd rather not break my program right now though
 	HashTable_Perfect<Mountain>** hashTable;
-	std::vector<Edge*> edge;
-	std::vector<Mountain*> range;	//vertices
+	//std::vector<Mountain*> vertices;	//vertices
 };
 
 #endif //MOUNTAIN_H
