@@ -45,6 +45,7 @@ template<unsigned int T> struct Keys {
 //This became a class out of chance. Largely because I had the construct/destruct inlined, 
 //but it needed a complete mountain type to call delete on. So now not so much
 class Edge {
+public:
 	//construct/destruct
 	Edge();
 	Edge(Mountain* destination, double& in_weight);
@@ -56,6 +57,8 @@ class Edge {
 
 //---------MOUNTAIN---------//
 //vertex in the graph sense, node in the hash table sense
+//I ditched protected and private in favor of not writing so many get/set methods as mountain is already so protected from it's location in the higher level strcture.
+//Which means that a struct would be identical to this in every way. But whatever. Headerfile conventions are too goddamn tangled.
 class Mountain {
 public:
 	//construct/destruct
@@ -66,8 +69,6 @@ public:
 	bool have_visited;		//record keeping
 	double distance;		//record keeping for algs
 
-protected:
-private:
 	//used for tracing paths in route finding algorithms
 	Mountain* previous;
 
@@ -93,18 +94,16 @@ public:
 	~Graph();
 
 	//by name
-	virtual void addEdge(Keys<2>& origin, Keys<2>& destination, double& weight);	//v1, v2, weight
+	virtual Mountain* shortestPath(std::string&, std::string&) = 0;		//returns a mountain because it is used for trace-back via previous attribute.
+	virtual void addEdge(Keys<2>& origin, Keys<2>& destination, double& weight) = 0;	//pure vitrual, graph itself does not actually have access to what it needs. (Which is the hashTable lookup)
 	void displayEdges(Mountain*);
 	void BFTraversal();
 	void BFTraversal(std::string&);
-	Mountain* shortestPath(std::string&, std::string&);		//
 
 protected:
 	void reset_visited();	//protected because why not
 	std::vector<Mountain*> vertices;
 private:
-	//graph is sudo virtual/interface, I'm simply leaving private things so that I can write the functions for graph
-	//and have them implement in HashMap
 };
 
 //---------HASHTABLE_PERFECT---------//
@@ -137,10 +136,10 @@ public:
 			std::cout << hashTable[i]->title << ":" << hashTable[i]->year << std::endl;
 		}
 	}
-	unsigned int size_of() {
+	inline unsigned int size_of() {
 		return size;
 	}
-	bool is_empty() {
+	inline bool is_empty() {
 		return (size == 0);
 	}
 	template<typename K>
@@ -180,20 +179,14 @@ public:
 	void addEdge(Keys<2>& origin, Keys<2>& destination, double& weight);
 	
 	Mountain* findMountain(std::string& in_name);
-
-	unsigned int size_of() {
-		return size;
-	}
-	bool is_empty() {
-		return (size == 0);
-	}
+	Mountain* shortestPath(std::string&, std::string&);		//returns a mountain because it is used for trace-back via previous attribute.
+																//required overload in HashMap because of the hash-lookup
 
 protected:
 private:
 	//I might move this back into protected of hashtable_perfect later
 	//I'd rather not break my program right now though
 	HashTable_Perfect<Mountain>** hashTable;
-	//std::vector<Mountain*> vertices;	//vertices
 };
 
 #endif //MOUNTAIN_H

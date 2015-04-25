@@ -1,5 +1,10 @@
 /*
-
+	Derek Prince
+	April, 2015
+	CSCI 2270 Final Project
+	@ CU Boulder
+	(even though we still have a final...)
+	HashMap, a graph with perfect hashing lookup.
 */
 
 #include<iostream>
@@ -17,10 +22,6 @@ int main(int argc, char* argv[]) {
 
 	HashMap* hashMap = new HashMap;
 
-	int one = 1;
-	double two = 2;
-	Mountain* temp = hashMap[one][one];
-
 	string tmpName = "Action Jesus";
 	Keys<2> k = hashMap->populateKeys(tmpName);
 	if (k[0] == 1)
@@ -31,7 +32,7 @@ int main(int argc, char* argv[]) {
 		cout << "that worked. Somehow.";
 	else
 		cout << "Like I thought.";
-
+		
 	//Read in nodes
 	std::ifstream inFile;
 	if (argc > 1) {
