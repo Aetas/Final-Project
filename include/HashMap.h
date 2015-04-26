@@ -172,7 +172,10 @@ public:
 
 	void insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew);
 	void deleteMountain(std::string& in_name);
+	void addEdge(Keys& origin, Keys& destination);
 	void addEdge(Keys& origin, Keys& destination, double& weight);
+
+	bool mountainExists(Keys& lookup);
 
 	Mountain* findMountain(std::string& in_name);
 	Mountain* shortestPath(std::string&, std::string&);		//returns a mountain because it is used for trace-back via previous attribute.

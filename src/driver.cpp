@@ -39,8 +39,11 @@ int main(int argc, char* argv[]) {
 			string fileName = "";
 			while (!inFile.is_open()) {
 				cout << " The file could not be opened."
-					<< "\n Please enter the name of the desired CSV file: " << endl;
+					<< "\n Please enter the name of the desired CSV file\n"
+					<< " <name.csv>: ";
+				//cin.ignore(10000, '\n');	//probably going to have to put a bunch of these in the menu loop as per usual. 
 				getline(cin, fileName);
+				cout << endl;
 				inFile.open(fileName.c_str());
 			}
 			readFile(inFile, hashMap);
@@ -72,27 +75,79 @@ int main(int argc, char* argv[]) {
 	while (select != 9) {
 		cout << " =====Menu======" << endl
 			<< "1. Print contents" << endl
-			<< "2. Get mountain location" << endl
+			<< "2. Get hash location" << endl		//Since I use this largely to test my hash function, it does not complain if the mountain does not exist. It only returns the location it would be
 			<< "3. Add Mountain" << endl
 			<< "4. Add Mountain Edge" << endl
-			<< "5. " << endl
-			<< "6. " << endl
-			<< "7. Add  all edges" << endl
-			<< "8. Display mountain edges" << endl
+			<< "5. Add  all edges" << endl
+			<< "6. Display mountain edges" << endl
+			<< "7. Find shortest path" << endl
+			<< "8. Find shortest distance" << endl
 			<< "9. Quit" << endl;
 		cout << " <#>: ";
 		cin >> select;
-		if (select == 1) {
-		
+		if (select == 1) {	//print contents
+			hashMap->printContents();
 		}
-		if (select == 2) {
-
+		if (select == 2) {	//get hash location
+			cout << " Enter mountain name\n"
+				<< " <name>: ";
+			std::string name;
+			getline(cin, name);
+			Keys k = hashMap->populateKeys(name);
+			cout << "(" << k[0] << "," << k[1] << ") : "
+				<< name << endl;
 		}
-		if (select == 3) {
-
+		if (select == 3) {	//add mountain
+			string name = "", range = "";
+			int rank = 0;
+			double elevation = 0, latitude = 0, longitude = 0;
+			char N_S = ' ', E_W = ' ';
+			cout << " Enter rank\n"				//rank
+				<< " <#>: ";
+			cin >> rank;
+			cout << "\n Enter name\n"			//name
+				<< " <name>: ";
+			getline(cin, name);
+			cout << "\n Enter elevation\n"		//elevation
+				<< " <#>: ";
+			cin >> elevation;
+			cout << "\n Enter range\n"			//range
+				<< " <range>: ";
+			getline(cin, range);
+			cout << "\n Enter coordinates\n"	//coords
+				<< " <Lat#>: ";
+			cin >> latitude;
+			cout << "\n <N/S>: ";
+			cin >> N_S;
+			cout << " <Long#>: ";
+			cin >> longitude;
+			cout << "\n <E/W>: ";
+			cin >> E_W;
+			cout << endl;
+			hashMap->insertMountain(rank, name, elevation, range, latitude, N_S, longitude, E_W);
 		}
-		if (select == 4) {
-
+		if (select == 4) {	//add mountain edge
+			cout << " Enter origin mountain\n"
+				<< " <name>: ";
+			string origin = "";
+			getline(cin, origin);
+			cout << endl << " Enter destination mountain\n"
+				<< " <name>: ";
+			string destination = "";
+			getline(cin, destination);
+			cout << endl;
+			Keys orig = hashMap->populateKeys(origin);
+			Keys dest = hashMap->populateKeys(destination);
+			if (!hashMap->mountainExists(orig)) {
+				cout << " The originating mountain does not exist." << endl;
+				continue;
+			}
+			else  if (!hashMap->mountainExists(dest)) {
+				cout << " The destination mountain does not exist." << endl;
+				continue;
+			}
+			else
+				hashMap->addEdge(orig, dest);
 		}
 		if (select == 5) {
 

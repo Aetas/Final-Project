@@ -5,6 +5,7 @@
 #include<string>
 #include<vector>
 #include<queue>
+#include<math.h>
 #include"HashMap.h"
 
 //EDGE
@@ -184,9 +185,31 @@ void HashMap::deleteMountain(std::string& in_name) {
 	}
 }
 
+bool HashMap::mountainExists(Keys& lookup) {
+	return !(this->hashTable[lookup[0]]->hashTable[lookup[1]] == nullptr);
+}
+
 Mountain* HashMap::findMountain(std::string& in_name) {
 	Keys k = populateKeys(in_name);
 	return this->hashTable[k[0]]->hashTable[k[1]];
+}
+
+//this version of addEdge calculates the difference in the coordinates.
+void HashMap::addEdge(Keys& origin, Keys& destination) {
+	//technically, this will fail for mountains in different hemispheres, since it does not check for N/S|E/W pairs.
+	//but technically I dont have neough time and will come back to it later. Probably in the dev branch again
+
+	double weight = -1;
+	//this line just finds the difference between the two mountains in the x-plane. Will need to pythag. later.
+	double diff_x = (this->hashTable[origin[0]]->hashTable[origin[1]]->coordinates.longitude - this->hashTable[destination[0]]->hashTable[destination[1]]->coordinates.longitude);
+	//same as above but for y
+	double diff_y = (this->hashTable[origin[0]]->hashTable[origin[1]]->coordinates.latitude - this->hashTable[destination[0]]->hashTable[destination[1]]->coordinates.latitude);
+
+	//use pythag. to compute the distance between. Technically, trig could have been used, but since all values are known, it's not much different.
+	weight = sqrt((pow(diff_x, 2)) + (pow(diff_y, 2)));	//weight = the squart root of the sum of the differences squared.
+
+	Edge* new_edge = new Edge(this->hashTable[destination[0]]->hashTable[destination[1]], weight);
+	this->hashTable[origin[0]]->hashTable[origin[1]]->edge.push_back(new_edge);
 }
 
 void HashMap::addEdge(Keys& origin, Keys& destination, double& weight) {
