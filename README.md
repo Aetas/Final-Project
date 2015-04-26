@@ -5,6 +5,7 @@ I chose to use a class (HashMap) that utilizes multiple inheritance (of Graph an
 
 #### State of the program
 Not willing to give up a self-nesting templated hashtable class for too long made me run out of time as of Sunday. I'm going to continue to update the program throughout at least the next week, but at the moment it feels like a really heavy and useless graph because there are no edges, and that means it has no real purpose other than being a perfect hash table for no gain.
+The Makefile is grossly untested.
 
 ### Project Summary
 This program takes a comma separated value (.csv or any text files that are comma delim'd) document of colorado 14ers and builds a graph around it.
@@ -12,7 +13,14 @@ However, since the weakness of a graph is it's O(n) access times, I merged a gra
 
 
 ### How To Run
-Use your legs.
+Clone into `https://github.com/Aetas/Prince-CSCI2270-FinalProject` and compile.
+
+In the terminal, run `HashMap.o` to start the program without specifying a file.
+
+To start the program with the program specified, run `HashMap.o 14ers.csv`.
+
+If the file is not found, it is likely not in the same directory as the executable, in which case either put them in the same directory or run `HashMap.o ../path/to/dir/14ers.csv`.
+
 
 ### Dependencies
 GCC, Clang, or VC++ compiler up to c++11, or c++0x
@@ -45,6 +53,27 @@ sudo yum install make
 A terminal environment. 32 or 64 bit, though there shouldn't be any reason 16 wouldn't work. Probably.
 
 Windows/Deb-distributions/RHEL-distirbutions/Unix-like distributions (BSD/Mac/etc) should all be fine.
+
+### Compiling
+#### Windows
+Windows has a version of unix-make that I have never used but should work fine. There are no GNU Make features in the Makefile to ruin things. Except maybe vpath if you choose to uncomment that bit.
+
+Compile normally with visual studio as a project. Set header path to the HashMap.h location
+
+It is possible to compile with MSBuild from command line as well... But GCC/Clang is the only option I have explored.
+#### Mac
+Unfortunately I no longer have a mac to test this on. If compiling from the terminal, follow a Unix-like OS instruction set.
+
+If someone has experience with Mac compiling, feel free to update this.
+#### Unix-like - GCC
+Type `g++ --version` and make sure -std=c++0x or -std=c++1 [is supported](https://gcc.gnu.org/projects/cxx0x.html) by your version. Chances are very good that it is.
+
+From the base cloned directory copy in... `g++ -Wall -Werror -std=c++0x ./src/driver.cpp ./src/HashTable.cpp ./include/HashTable.h -o HashTable.o`
+#### Unix-like - Clang
+TBA
+
+#### Unix-like - Make
+Navigate into the cloned directory from terminal and type `Make`
 
 ### Group Members
 Yours truly
