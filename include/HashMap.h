@@ -91,10 +91,10 @@ public:
 
 	//by name
 	virtual Mountain* shortestPath(std::string&, std::string&) = 0;		//returns a mountain because it is used for trace-back via previous attribute.
+	virtual Mountain* shotestDistance(std::string& origin, std::string& destination) = 0;	//same as above. And below
 	virtual void addEdge(Keys& origin, Keys& destination, double& weight) = 0;	//pure vitrual, graph itself does not actually have access to what it needs. (Which is the hashTable lookup)
 	void displayEdges(Mountain*);
 	void BFTraversal();
-	void BFTraversal(std::string&);
 
 protected:
 	void reset_visited();	//protected because why not
@@ -177,7 +177,7 @@ public:
 	Mountain* findMountain(std::string& in_name);
 	Mountain* shortestPath(std::string&, std::string&);		//returns a mountain because it is used for trace-back via previous attribute.
 															//required overload in HashMap because of the hash-lookup
-
+	Mountain* shotestDistance(std::string& origin, std::string& destination);
 protected:
 private:
 };

@@ -101,14 +101,6 @@ void Graph::BFTraversal() {
 	reset_visited();	//return to default condition before exit
 }
 
-//I'm not sure this function actually has a use. I mean, it probably does, but when the hell would I use it? Probs going to be deleted
-//another mark against this is that graph does not have access to hash lookup, and I don't want to loop this biotch to O(n).
-//meaning I would then have to go to a HashMap implemintation w/ pure virtual in Graph.
-//Which technically is fine, but it is ugly maintenance
-void Graph::BFTraversal(std::string& start_Mountain) {
-
-}
-
 //
 //HashTable
 //
@@ -230,8 +222,9 @@ Mountain* HashMap::shortestPath(std::string& origin, std::string& destination) {
 	//set the algorithm conditions.
 	//Although the constructors set these by default, if the algorithm is run again in the same run-through, it will have the old values in it.
 	for (std::vector<Mountain*>::iterator it = this->vertices.begin(); it != this->vertices.end(); it++) {
-		(*it)->distance = 99999;
+		(*it)->distance = 9999999;
 		(*it)->previous = nullptr;
+		(*it)->have_visited = false;
 	}
 
 	std::queue<Mountain*> path;
@@ -255,7 +248,69 @@ Mountain* HashMap::shortestPath(std::string& origin, std::string& destination) {
 		current->have_visited = true;
 	}
 
-	return fin;
+	return fin;	//this stores the distance as an integer in 'distance', which can be accessed in main()
 }
 
 //my one true hate. Dijkastraartighjasdfg-pronunciation.
+Mountain* HashMap::shotestDistance(std::string& origin, std::string& destination) {
+	//hash out the locations of the begin/end
+	Keys start = populateKeys(origin);
+	Keys end = populateKeys(destination);
+	Mountain* current = this->hashTable[start[0]]->hashTable[start[1]];
+	Mountain* fin = this->hashTable[end[0]]->hashTable[end[1]];
+
+	if (current == nullptr) {
+		std::cout << " The origin mountain does not exist." << std::endl;
+		return nullptr;
+	}
+	if (fin == nullptr) {
+		std::cout << " The destination mountain does not exist." << std::endl;
+		return nullptr;
+	}
+	//if it is possible to traverse...
+	if (current->range != fin->range) {
+		std::cout << " These mountains are in different ranges." << std::endl;
+		return nullptr;
+	}
+
+	if (current->edge.size() < 1 || fin->edge.size() < 1) {
+		std::cout << " Please build the edges before traversing." << std::endl;
+		return nullptr;
+	}
+	//set the algorithm conditions.
+	//Although the constructors set these by default, if the algorithm is run again in the same run-through, it will have the old values in it.
+	for (std::vector<Mountain*>::iterator it = this->vertices.begin(); it != this->vertices.end(); it++) {
+		(*it)->distance = 9999999;	//efectively double_max
+		(*it)->previous = nullptr;
+		(*it)->have_visited = false;
+	}
+	std::vector<Mountain*> solved;
+	current->have_visited = true;
+	current->distance = 0;
+	solved.push_back(current);
+
+
+	while (!fin->have_visited) {
+		double minDistance = 9999999;
+		Mountain* minMountain = nullptr, * prevMountain = nullptr;
+		for (std::vector<Mountain*>::iterator it = solved.begin(); it != solved.end(); it++) {
+			current = (*it);
+			for (std::vector<Edge*>::iterator jt = (*it)->edge.begin(); jt != (*it)->edge.end(); jt++) {
+				if (!(*jt)->next->have_visited) {
+					double dist = current->distance + (*jt)->weight;	//could has just as easily been "(*it)->distance + (*jt)->weight;" In fact, current is largely syntax sugar
+					if (minDistance > dist) {
+						minDistance = dist;
+						minMountain = (*jt)->next;
+						prevMountain = current;
+					}
+				}
+			}
+		}
+		minMountain->distance = minDistance;
+		minMountain->previous = prevMountain;
+		minMountain->have_visited = true;
+		solved.push_back(minMountain);
+	}
+
+	return fin;	//reverse the path this left to find distance/path/etc.
+}
