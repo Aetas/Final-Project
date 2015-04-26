@@ -8,9 +8,9 @@
 #include"HashMap.h"
 
 //EDGE
-Edge::Edge() {
-
-}
+//Edge::Edge() {
+//
+//}
 
 Edge::Edge(Mountain* destination, double& in_weight) {
 	next = destination;
@@ -111,7 +111,7 @@ void Graph::BFTraversal(std::string& start_Mountain) {
 
 //HASHMAP
 HashMap::HashMap() {
-	hashTable = new HashTable_Perfect<HashTable_Perfect<Mountain>>*[4];
+	hashTable = new HashTable_Perfect<Mountain>*[4];
 	for (unsigned int i = 0; i < 4; i++) {
 		hashTable[i] = nullptr;
 	}
@@ -125,38 +125,38 @@ HashMap::~HashMap() {
 
 void HashMap::insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew) {
 	Mountain* mountain = new Mountain(in_rank, in_name, in_elevation, in_range, in_lat, ns, in_long, ew);
-	Keys<2> k = populateKeys(in_name);
-	*this[k[0]][k[1]] = *mountain;	//make sure this works. Pointers, man.
+	Keys k = populateKeys(in_name);
+	hashTable[1]->hashTable[1] = mountain;	//make sure this works. Pointers, man.
 	vertices.push_back(mountain);	//add to graph
 	size++;
 }
 
 
 void HashMap::deleteMountain(std::string& in_name) {
-	Keys<2> k = populateKeys(in_name);
-	if (this[k[1]][k[2]] != nullptr) {	//make sure there is actually somehting there before trying to delete
-		delete this[k[1]][k[2]];
+	Keys k = populateKeys(in_name);
+	if (hashTable[k[1]]->hashTable[k[2]] != nullptr) {	//make sure there is actually somehting there before trying to delete
+		delete this->hashTable[k[1]]->hashTable[k[2]];
 		size--;
 	}
 }
 
 Mountain* HashMap::findMountain(std::string& in_name) {
-	Keys<2> k = this->populateKeys(in_name);
-	return this[k[0]][k[1]];
+	Keys k = populateKeys(in_name);
+	return this->hashTable[k[0]]->hashTable[k[1]];
 }
 
-void HashMap::addEdge(Keys<2>& origin, Keys<2>& destination, double& weight) {
-	Edge* new_edge = new Edge(this[destination[0]][destination[1]], weight);
-	this[origin[0]][origin[1]]->edge.push_back(new_edge);
+void HashMap::addEdge(Keys& origin, Keys& destination, double& weight) {
+	Edge* new_edge = new Edge(this->hashTable[destination[0]]->hashTable[destination[1]], weight);
+	this->hashTable[origin[0]]->hashTable[origin[1]]->edge.push_back(new_edge);
 }
 
 //my one true hate. Dijkastraartighjasdfg-pronunciation.
 Mountain* HashMap::shortestPath(std::string& origin, std::string& destination) {
 	//hash out the locations of the begin/end
-	Keys<2> start = populateKeys(origin);
-	Keys<2> end = populateKeys(destination);
-	Mountain* current = this[start[0]][start[1]];
-	Mountain* fin = this[end[0]][end[1]];
+	Keys start = populateKeys(origin);
+	Keys end = populateKeys(destination);
+	Mountain* current = this->hashTable[start[0]]->hashTable[start[1]];
+	Mountain* fin = this->hashTable[end[0]]->hashTable[end[1]];
 
 	if (current == nullptr) {
 		std::cout << " The origin mountain does not exist." << std::endl;

@@ -28,13 +28,13 @@ class Graph;
 //so I made this struct to simplify things, though it might not seem like it.
 //the template is to support nesting to any degree, as it makes as many keys as specifiec.
 //Unfortunately, my keygen function now falls short of it's key container
-template<unsigned int T> struct Keys {
+struct Keys {
 	Keys(){};
 	~Keys(){};
-	unsigned int key[T];
+	unsigned int key[2];
 	void operator=(const Keys& in_key) {
-		this->key[0] = in_key[0];
-		this->key[1] = in_key[1];
+		key[0] = in_key.key[0];
+		key[1] = in_key.key[1];
 	}
 	unsigned int& operator[](int k) {
 		return key[k];
@@ -47,7 +47,7 @@ template<unsigned int T> struct Keys {
 class Edge {
 public:
 	//construct/destruct
-	Edge();
+	Edge() {};
 	Edge(Mountain* destination, double& in_weight);
 	~Edge();
 
@@ -95,7 +95,7 @@ public:
 
 	//by name
 	virtual Mountain* shortestPath(std::string&, std::string&) = 0;		//returns a mountain because it is used for trace-back via previous attribute.
-	virtual void addEdge(Keys<2>& origin, Keys<2>& destination, double& weight) = 0;	//pure vitrual, graph itself does not actually have access to what it needs. (Which is the hashTable lookup)
+	virtual void addEdge(Keys& origin, Keys& destination, double& weight) = 0;	//pure vitrual, graph itself does not actually have access to what it needs. (Which is the hashTable lookup)
 	void displayEdges(Mountain*);
 	void BFTraversal();
 	void BFTraversal(std::string&);
@@ -106,15 +106,49 @@ protected:
 private:
 };
 
+class HashTable {
+public:
+	HashTable() {};
+	~HashTable() {};
+
+	void printContents();
+
+	unsigned int size_of();
+	bool is_empty();
+
+	Keys populateKeys(std::string& in_name) {
+		Keys k;
+		int sum = 0;
+		for (unsigned int i = 0; i < in_name.size(); i++)
+			sum += in_name[i];
+
+		k.key[0] = sum % 4;
+		k.key[1] = k.key[0] % 17;
+
+		return k;
+	};
+
+	template<typename T>
+	T* operator[](unsigned int key) {
+		return hashTable[key];
+	}
+	
+protected:
+	HashTable_Perfect<Mountain>** hashTable;
+	unsigned int size;
+private:
+	//Mountain** hashTable;
+};
+
 //---------HASHTABLE_PERFECT---------//
-//My perfect hashtable w/ templates
-template<class T> class HashTable_Perfect {
+//perfect hashtable w/ templates
+template<class T> class HashTable_Perfect : public HashTable {
 public:
 	HashTable_Perfect() {
 		size = 0;
 		hashTable = new T*[SECONDARY_SIZE];
-		for (unsigned int i = 0; i < SECONDARY_SIZE; i++)
-			hashTable[i] = nullptr;
+		//for (unsigned int i = 0; i < SECONDARY_SIZE; i++)
+		//	hashTable[i] = nullptr;
 	}
 	HashTable_Perfect(int s_size) {		//specify size of second table, likely never used since arrays cant be given constructor arguments
 		size = 0;
@@ -124,70 +158,77 @@ public:
 		if (size > 0)
 			delete[]hashTable;
 	}
-
-	void printInventory() {
-		if (size == 0) {
-			std::cout << "empty" << std::endl;	//I'm only tolerating a print in this function because it is a print function.
-			return;								//really it should have thrown an error, but that can be added later
-		}
-		for (int i = 0; i < H_TABLE_SIZE; i++) {
-			if (hashTable[i] == nullptr)
-				continue;	//skip rest
-			std::cout << hashTable[i]->title << ":" << hashTable[i]->year << std::endl;
-		}
-	}
-	inline unsigned int size_of() {
-		return size;
-	}
-	inline bool is_empty() {
-		return (size == 0);
-	}
 	template<typename K>
-	T* operator[](K key) {
-		return hashTable[key];
+	T* operator[](unsigned int key) {
+		return this->hashTable[key];
 	}
 
-	//I'll come back top this later when it can determine it's own size
-	//though it might be easiest to just have keys templated with the nesting depth specified at construction
-	Keys<2> populateKeys(std::string& in_name) {
-		Keys<2> k;
-		int sum = 0;
-		for (unsigned int i = 0; i < in_name.size(); i++)
-			sum += in_name[i];
-		k.key[0] = sum % PRIMARY_SIZE;
-		k.key[1] = k.key[0] % SECONDARY_SIZE;
-		return k;
-	}
-
+	T** hashTable;
 protected:
 	unsigned int size;
 private:
-	T** hashTable;
+	//T** hashTable;
 };
 
 //---------HASHMAP---------//
 //to template... or not to template...
 //I'm removing the template bit for now because the descision is hindering progress. I can always come back and convert/paste in templates if I need to.
 //template<class T>
-class HashMap : public HashTable_Perfect<Mountain>, public Graph {
+class HashMap : public HashTable, public Graph {
 public:
 	HashMap();
 	~HashMap();
 
 	void insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew);
 	void deleteMountain(std::string& in_name);
-	void addEdge(Keys<2>& origin, Keys<2>& destination, double& weight);
+	void addEdge(Keys& origin, Keys& destination, double& weight);
 
 	Mountain* findMountain(std::string& in_name);
 	Mountain* shortestPath(std::string&, std::string&);		//returns a mountain because it is used for trace-back via previous attribute.
 	//required overload in HashMap because of the hash-lookup
-
+	template<class T>
+	T* operator[](unsigned int key) {
+		return hashTable[key];
+	}
+	
 protected:
 private:
-	//I might move this back into protected of hashtable_perfect later
-	//I'd rather not break my program right now though
 	//just kidding, it was already broken
-	HashTable_Perfect<HashTable_Perfect<Mountain>>** hashTable;
+	//HashTable_Perfect<HashTable_Perfect<Mountain>>** hashTable;
 };
 
 #endif //MOUNTAIN_H
+
+/*void printContents() {
+if (size == 0) {
+std::cout << "empty" << std::endl;	//I'm only tolerating a print in this function because it is a print function.
+return;								//really it should have thrown an error, but that can be added later
+}
+for (int i = 0; i < H_TABLE_SIZE; i++) {
+if (hashTable[i] == nullptr)
+continue;	//skip rest
+std::cout << hashTable[i]->title << ":" << hashTable[i]->year << std::endl;
+}
+}
+inline unsigned int size_of() {
+return size;
+}
+inline bool is_empty() {
+return (size == 0);
+}
+template<typename K>
+T* operator[](K key) {
+return hashTable[key];
+}
+
+//I'll come back top this later when it can determine it's own size
+//though it might be easiest to just have keys templated with the nesting depth specified at construction
+Keys<2> populateKeys(std::string& in_name) {
+Keys<2> k;
+int sum = 0;
+for (unsigned int i = 0; i < in_name.size(); i++)
+sum += in_name[i];
+k.key[0] = sum % PRIMARY_SIZE;
+k.key[1] = k.key[0] % SECONDARY_SIZE;
+return k;
+}*/

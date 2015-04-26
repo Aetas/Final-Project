@@ -126,19 +126,19 @@ void readFile(std::ifstream& inFile, HashMap* hm) {
 	buffer = "";	//easier to make sure no rogue values are kept;
 	while (!inFile.eof()) {
 		getline(inFile, buffer, ',');
-		rank = stoi(buffer);
+		rank = std::stoi(buffer);
 		getline(inFile, buffer, ',');
 		name = buffer;
 		getline(inFile, buffer, ',');
-		elevation = stod(buffer);
+		elevation = std::stod(buffer);
 		getline(inFile, buffer, ',');
 		range = buffer;
 		getline(inFile, buffer, ',');
-		latitude = stod(buffer);
+		latitude = std::stod(buffer);
 		getline(inFile, buffer, ',');
 		N_S = buffer[0];
 		getline(inFile, buffer, ',');
-		longitude = stod(buffer);
+		longitude = std::stod(buffer);
 		getline(inFile, buffer, '\n');
 		E_W = buffer[0];
 		// Build edges sepparately? Hashing has the advantage of ditching O(n) lookup, so adding them after simplifies 
