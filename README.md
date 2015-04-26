@@ -1,54 +1,69 @@
 # Final-Project
 
-Looking to rewrite/expand the hash table program to include 'perfect' hashing with a singly nested secondary hash table instead of a linked list. However, since that seems kinda boring, I'll probably expand this as I find inspiration of what to do. Also, this is most likely going to be on a list of 14ers since those are much more interesting than movies. And have more information.
-
-After long (read... a few moments) deliberation, I've decided that it would be a lot more fun to implement the 14ers as nested graphs, ordered by range with perfect hashing lookup. If this is too time consuming, unweighted edges are always super easy. The real schtickler will be modifying algorithms to go between peaks. Going between ranges is the exact same thing that was done before.
-
-Also, this means that my .csv file now needs edges. Meh.
-
-
-So far expanding ideas include...
-
-1. Send primary and secondary table locations to arduino to either print or print in binary with LED's.
-
-2. Read in the file initially and then 'compile' it to a binary file for primary use.
-
-3. Construct a graph from the 14er locations as the bird flies.
-
-  - As nodes are created, they could be hashed into the table but this may make a secondary data structure useless.
-
-  - The main advantage of that is that accessing graph elements would take O(1) (or 2 if each hash function is an operation per say) instead of O(n) but who knows how relevant that is to this at the moment.
-
-4. Create a color-blot (that's what I'm calling it anyways) .png or .jpeg file from binary where the locations are printed over a not-so-pretty rendering of colorado.
-
-  - has the advantage of being mostly complete from the get-go as coordinates are easy to convert into a more localized cartesian plot.
-
-5. I just want to get back to working on 'my' parser, really.
-
 #### In defense of multiple inheritance
 I chose to use a class (HashMap) that utilizes multiple inheritance (of Graph and HashTable) over composition based on the idea that HashMap is expected to function like both a graph and a hash table in every sense, choosing which structure to favor based on strengths. In other words, HashMap is expected to have the ability to be used in place of a graph or hash table in every application, lending to inheritance.
 
+#### State of the program
+Not willing to give up a self-nesting templated hashtable class for too long made me run out of time as of Sunday. I'm going to continue to update the program throughout at least the next week, but at the moment it feels like a really heavy and useless graph because there are no edges, and that means it has no real purpose other than being a perfect hash table for no gain.
 
 ### Project Summary
-It takes data and nibbles on it.
+This program takes a comma separated value (.csv or any text files that are comma delim'd) document of colorado 14ers and builds a graph around it.
+However, since the weakness of a graph is it's O(n) access times, I merged a graph with a hashtable to reduce the access/modify times. But since a hash table can approach O(n) time depending on the hash function and table size, I opted for a 'perfect' hash table to make access O(1) constant.
+
 
 ### How To Run
 Use your legs.
 
 ### Dependencies
-A computer.
+GCC, Clang, or VC++ compiler up to c++11, or c++0x
+- Yes, XCode uses Clang. Or rather an almost identical version from the LLVM.
+
+This only uses the standard libraries.
+
+If you intend to use the Makefile then Make will be required. The simple Unix like make is fine if GNU is not an option.
+
+To get Make on Debian distributions, copy+paste into terminal:
+```
+sudo apt-get install build-essential
+```
+Chances are this is already installed, otherwise you won't have a compiler in the first place...
+
+To get Make on a RHEL machines, copy+paste into terminal:
+
+for the whole dev package needed for compiling...
+```
+sudo yum groupinstall 'Development Tools'
+```
+or for just make...
+```
+sudo yum install make
+```
+
+`sudo yum list | grep Make*` works wonders as well.
 
 ### System Requirements
-Ability to download RAM. Steep, I know.
+A terminal environment. 32 or 64 bit, though there shouldn't be any reason 16 wouldn't work. Probably.
+
+Windows/Deb-distributions/RHEL-distirbutions/Unix-like distributions (BSD/Mac/etc) should all be fine.
 
 ### Group Members
 Yours truly
 
 ### Contributors
-[14ers](14ers.com) for generating the initial ranked .csv file. Nobody likes to type out 53 lines of CSV. Just kidding, I had to type in all of the coordinates.
+[14ers](14ers.com) for generating the initial ranked .csv file. Nobody likes to type out 53 lines of CSV. Just kidding, I had to type in all of the coordinates and make the edge file.
 
 ### Open Issues/bugs
-- There doesn't seem to be any code to run.
+- There are probably a veritable s***-load hiding. Some of the 'bugs' (if they can be called that since it's by design) are simply coded to be circumvented purely because it's a functionality that is not supported. Nor was it really intended to be, but I might revisit it later.
 
 ### Contributing
-Namespaces are never declared in header files, while 'using std::' notation is preferred in drivers.
+There are a few things I try to maintain in my code...
+- Name spaces are never declared in implementation or header files, 'std::<command>' is preferred
+- Memory is never allocated in a header file. Which can be hard to follow with the next point
+- Templated functions and classes remain in the header files with their implementations
+- If a header file is going to use a large number of #includes, it is best to split the header up into multiple based on their #includes, if permitted. Circular including is not possible.
+- If it is going to use a hash-look-up and a graph implementation, overload it in HashMap
+- There are some naming conventions mentioned in the header file that I tried to follow loosely
+  * Full names are preferred over abbreviations
+  * Caps on every word is preferred in type/container declarations so that the lower case version can be a variable
+  * Making at least as many spelling errors as I do is highly encouraged.
+- For the most part, I'm just putting this body of text here because I needed to have something down.
