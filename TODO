@@ -1,19 +1,21 @@
-Everything, alright?
+Add edge.csv file.
+  will contain the name of the start mountain followed by the edge names and then calculate the distance between
 
-Finish CSV file with edges. If weighted, coords will be needed.
+Thoroughly test the dijkastra/path and traverse functions once the edges are in.
 
-Code files:
--graph.h
--graph.cpp
--hashtable.h
--hashtable.cpp
--driver.cpp
--binary.cpp
--binary.h
+Correct the recursive [] function to be able to call this/hashMap[1][2] again.
 
-Scripts:
-Makefile
-*.sh (?)
+Add binary file argument option, as well as a small binary doc generator program. (-b)
+
+Make sure Makefile will work. I technically haven't even tested it yet, and it also was originally set up for just my computer
+  as in it might try to look for my home folder/etc for an output path. Not great.
+
+*.sh config file? Will set up directories/etc for proper make.
+  Generalizes the make environment so that it always knows what to expect.
+
+Relive the template days.
+  dev branch. Will break things for a while.
+    It's also the reason I ran out of time like a fool.
 
 Git stuff:
 documentation
