@@ -36,7 +36,7 @@ Mountain::Mountain(std::string& in_name) {
 	coordinates.latitude = -1;
 	coordinates.E_W = ' ';
 	have_visited = false;
-	distance = MAX_DISTANCE;
+	distance = 999999999;
 }
 
 Mountain::Mountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& NS, double& in_long, char& EW) {
@@ -50,7 +50,7 @@ Mountain::Mountain(int& in_rank, std::string& in_name, double& in_elevation, std
 	coordinates.latitude = in_long;
 	coordinates.E_W = EW;
 	have_visited = false;
-	distance = MAX_DISTANCE;
+	distance = 999999999;
 }
 
 Mountain::~Mountain() {}
@@ -109,19 +109,71 @@ void Graph::BFTraversal(std::string& start_Mountain) {
 
 }
 
-//HASHMAP
-HashMap::HashMap() {
-	hashTable = new HashTable_Perfect<Mountain>*[4];
-	for (unsigned int i = 0; i < 4; i++) {
+//
+//HashTable
+//
+HashTable::HashTable() {
+	subSize = 0;
+	hashTable = new Mountain*[17];
+	for (unsigned int i = 0; i < 17; i++) {
 		hashTable[i] = nullptr;
 	}
 }
-
-HashMap::~HashMap() {
-	if (size > 0)
-		delete[]hashTable;
+HashTable::~HashTable() {
+	delete[]hashTable;
 }
 
+void HashTable::printContents(int index) {
+	if (subSize == 0) {
+		return;			//really it should have thrown an error, but that can be added later
+	}
+	for (unsigned int i = 0; i < 17; i++) {
+		if (hashTable[i] == nullptr)
+			continue;
+		std::cout << "(" << index << "," << i << ") :"
+			<< hashTable[i]->rank << ":" << hashTable[i]->name << ":" << hashTable[i]->elevation << ":"
+			<< hashTable[i]->coordinates.latitude << " " << hashTable[i]->coordinates.N_S << ","
+			<< hashTable[i]->coordinates.latitude << " " << hashTable[i]->coordinates.E_W << std::endl;
+	}
+}
+//
+//HashTable_Perfect
+//
+HashTable_Perfect::HashTable_Perfect() {
+	size = 0;
+	hashTable = new HashTable*[4];
+}
+
+HashTable_Perfect::~HashTable_Perfect() {
+	delete[]hashTable;
+}
+
+void HashTable_Perfect::printContents() {
+	if (size == 0) {
+		std::cout << "empty" << std::endl;	//I'm only tolerating a print in this function because it is a print function.
+		return;								//really it should have thrown an error, but that can be added later
+	}
+	for (int i = 0; i < 4; i++)
+		hashTable[i]->printContents(i);		//calls HashTable's print function, not to be confused with HT_Perfect's
+}
+
+Keys HashTable_Perfect::populateKeys(std::string& in_name) {
+	Keys k;
+	int sum = 0;
+	for (unsigned int i = 0; i < in_name.size(); i++)
+		sum += in_name[i];
+
+	k.key[0] = sum % 4;
+	k.key[1] = k.key[0] % 17;
+
+	return k;
+};
+
+//
+//HASHMAP
+//
+HashMap::HashMap() {}
+HashMap::~HashMap() {}
 
 void HashMap::insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew) {
 	Mountain* mountain = new Mountain(in_rank, in_name, in_elevation, in_range, in_lat, ns, in_long, ew);
@@ -150,7 +202,6 @@ void HashMap::addEdge(Keys& origin, Keys& destination, double& weight) {
 	this->hashTable[origin[0]]->hashTable[origin[1]]->edge.push_back(new_edge);
 }
 
-//my one true hate. Dijkastraartighjasdfg-pronunciation.
 Mountain* HashMap::shortestPath(std::string& origin, std::string& destination) {
 	//hash out the locations of the begin/end
 	Keys start = populateKeys(origin);
@@ -172,6 +223,10 @@ Mountain* HashMap::shortestPath(std::string& origin, std::string& destination) {
 		return nullptr;
 	}
 
+	if (current->edge.size() < 1) {
+		std::cout << " Please build the edges before traversing." << std::endl;
+		return nullptr;
+	}
 	//set the algorithm conditions.
 	//Although the constructors set these by default, if the algorithm is run again in the same run-through, it will have the old values in it.
 	for (std::vector<Mountain*>::iterator it = this->vertices.begin(); it != this->vertices.end(); it++) {
@@ -202,3 +257,5 @@ Mountain* HashMap::shortestPath(std::string& origin, std::string& destination) {
 
 	return fin;
 }
+
+//my one true hate. Dijkastraartighjasdfg-pronunciation.

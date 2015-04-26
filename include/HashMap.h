@@ -1,8 +1,5 @@
 #ifndef MOUNTAIN_H
 #define MOUNTAIN_H
-#define PRIMARY_SIZE 4
-#define SECONDARY_SIZE 17
-#define MAX_DISTANCE 9999999
 
 #include<string>
 #include<vector>
@@ -16,17 +13,18 @@ WIP naming conventions
 */
 
 
-//Since inheritance is used, making the compiler happy is needed
+//Since inheritance is used, this is largely to keep the compiler happy
 //The classes/structs are listed in the order they appear as a way to keep track of them
 class Edge;
 class Mountain;
-template<class T> class HashTable_Perfect;
 class Graph;
-//class HashMap;
+class HashTable_Perfect;
+class HashTable;
+class HashMap;
 
 //It was ugly and hard to keep track of passing pointers to integer arrays around to hold keys
 //so I made this struct to simplify things, though it might not seem like it.
-//the template is to support nesting to any degree, as it makes as many keys as specifiec.
+//the template is to support nesting to any degree, as it makes as many keys as specific.
 //Unfortunately, my keygen function now falls short of it's key container
 struct Keys {
 	Keys(){};
@@ -85,8 +83,6 @@ public:
 };
 
 //---------GRAPH---------//
-//writing traversal algorithms is going to be a f**king nightmare.
-//but that's fine.
 class Graph {
 public:
 	//construct/destruct
@@ -106,75 +102,67 @@ protected:
 private:
 };
 
-class HashTable {
+//---------HASHTABLE_PERFECT---------//
+/*template<class T>*/ class HashTable_Perfect {
 public:
-	HashTable() {};
-	~HashTable() {};
+	HashTable_Perfect();
+	~HashTable_Perfect();
+
+	inline unsigned int size_of() {
+		return size;
+	}
+
+	inline bool is_empty() {
+		return (size == 0);
+	}
 
 	void printContents();
 
-	unsigned int size_of();
-	bool is_empty();
+	Keys populateKeys(std::string& in_name);
 
-	Keys populateKeys(std::string& in_name) {
-		Keys k;
-		int sum = 0;
-		for (unsigned int i = 0; i < in_name.size(); i++)
-			sum += in_name[i];
-
-		k.key[0] = sum % 4;
-		k.key[1] = k.key[0] % 17;
-
-		return k;
-	};
-
-	template<typename T>
-	T* operator[](unsigned int key) {
-		return hashTable[key];
+	template<typename K>
+	HashTable* operator[](K key) {
+		return this->hashTable[key];
 	}
 	
 protected:
-	HashTable_Perfect<Mountain>** hashTable;
-	unsigned int size;
+	unsigned int size;		//this will be the overall/total size. Thus inherited into HashMap
+	HashTable** hashTable;
 private:
-	//Mountain** hashTable;
 };
 
-//---------HASHTABLE_PERFECT---------//
-//perfect hashtable w/ templates
-template<class T> class HashTable_Perfect : public HashTable {
+//HASHTABLE
+class HashTable {
 public:
-	HashTable_Perfect() {
-		size = 0;
-		hashTable = new T*[SECONDARY_SIZE];
-		//for (unsigned int i = 0; i < SECONDARY_SIZE; i++)
-		//	hashTable[i] = nullptr;
+	HashTable();
+	~HashTable();
+
+	inline unsigned int size_of() {
+		return subSize;
 	}
-	HashTable_Perfect(int s_size) {		//specify size of second table, likely never used since arrays cant be given constructor arguments
-		size = 0;
-		hashtable = new T*[s_size];
+
+	inline bool is_empty() {
+		return (subSize == 0);
 	}
-	~HashTable_Perfect() {
-		if (size > 0)
-			delete[]hashTable;
-	}
+
+	void printContents(int index);
+
 	template<typename K>
-	T* operator[](unsigned int key) {
+	Mountain* operator[](K key) {
 		return this->hashTable[key];
 	}
 
-	T** hashTable;
+	Mountain** hashTable;
 protected:
-	unsigned int size;
+	unsigned int subSize;
 private:
-	//T** hashTable;
 };
 
 //---------HASHMAP---------//
 //to template... or not to template...
 //I'm removing the template bit for now because the descision is hindering progress. I can always come back and convert/paste in templates if I need to.
 //template<class T>
-class HashMap : public HashTable, public Graph {
+class HashMap : public HashTable_Perfect, public Graph {
 public:
 	HashMap();
 	~HashMap();
@@ -185,50 +173,10 @@ public:
 
 	Mountain* findMountain(std::string& in_name);
 	Mountain* shortestPath(std::string&, std::string&);		//returns a mountain because it is used for trace-back via previous attribute.
-	//required overload in HashMap because of the hash-lookup
-	template<class T>
-	T* operator[](unsigned int key) {
-		return hashTable[key];
-	}
-	
+															//required overload in HashMap because of the hash-lookup
+
 protected:
 private:
-	//just kidding, it was already broken
-	//HashTable_Perfect<HashTable_Perfect<Mountain>>** hashTable;
 };
 
 #endif //MOUNTAIN_H
-
-/*void printContents() {
-if (size == 0) {
-std::cout << "empty" << std::endl;	//I'm only tolerating a print in this function because it is a print function.
-return;								//really it should have thrown an error, but that can be added later
-}
-for (int i = 0; i < H_TABLE_SIZE; i++) {
-if (hashTable[i] == nullptr)
-continue;	//skip rest
-std::cout << hashTable[i]->title << ":" << hashTable[i]->year << std::endl;
-}
-}
-inline unsigned int size_of() {
-return size;
-}
-inline bool is_empty() {
-return (size == 0);
-}
-template<typename K>
-T* operator[](K key) {
-return hashTable[key];
-}
-
-//I'll come back top this later when it can determine it's own size
-//though it might be easiest to just have keys templated with the nesting depth specified at construction
-Keys<2> populateKeys(std::string& in_name) {
-Keys<2> k;
-int sum = 0;
-for (unsigned int i = 0; i < in_name.size(); i++)
-sum += in_name[i];
-k.key[0] = sum % PRIMARY_SIZE;
-k.key[1] = k.key[0] % SECONDARY_SIZE;
-return k;
-}*/

@@ -5,6 +5,12 @@
 	@ CU Boulder
 	(even though we still have a final...)
 	HashMap, a graph with perfect hashing lookup.
+
+	In the saddest sort of way, I did a classic amature mistake of getting carried away with 
+	the fancy implementation options (such as recursively overloading [] to abstract from the hashtable chain)
+	and template inheritance/self inclusion and nesting to make for onely one class.
+	And because of it, I ran out of time and had to implement it the simple way to something less than my expectations.
+	I'm going to continue to update it, but it's due in a couple of hours. Lovely.
 */
 
 #include<iostream>
@@ -21,8 +27,6 @@ void readFile(std::ifstream& inFile, HashMap* hm);
 int main(int argc, char* argv[]) {
 
 	HashMap* hashMap = new HashMap;
-
-	string tmpName = "Action Jesuss";
 
 	//Read in nodes
 	std::ifstream inFile;
