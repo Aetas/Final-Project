@@ -22,17 +22,8 @@ int main(int argc, char* argv[]) {
 
 	HashMap* hashMap = new HashMap;
 
-	string tmpName = "Action Jesus";
-	Keys<2> k = hashMap->populateKeys(tmpName);
-	if (k[0] == 1)
-		cout << "cool";
-	else
-		cout << "radical";
-	if (k[1] == 1)
-		cout << "that worked. Somehow.";
-	else
-		cout << "Like I thought.";
-		
+	string tmpName = "Action Jesuss";
+
 	//Read in nodes
 	std::ifstream inFile;
 	if (argc > 1) {

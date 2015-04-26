@@ -128,7 +128,7 @@ public:
 	void printInventory() {
 		if (size == 0) {
 			std::cout << "empty" << std::endl;	//I'm only tolerating a print in this function because it is a print function.
-			return;
+			return;								//really it should have thrown an error, but that can be added later
 		}
 		for (int i = 0; i < H_TABLE_SIZE; i++) {
 			if (hashTable[i] == nullptr)
@@ -144,7 +144,7 @@ public:
 	}
 	template<typename K>
 	T* operator[](K key) {
-		return this->hashTable[key];
+		return hashTable[key];
 	}
 
 	//I'll come back top this later when it can determine it's own size
@@ -159,10 +159,10 @@ public:
 		return k;
 	}
 
-	T** hashTable;
 protected:
 	unsigned int size;
 private:
+	T** hashTable;
 };
 
 //---------HASHMAP---------//
@@ -177,16 +177,17 @@ public:
 	void insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew);
 	void deleteMountain(std::string& in_name);
 	void addEdge(Keys<2>& origin, Keys<2>& destination, double& weight);
-	
+
 	Mountain* findMountain(std::string& in_name);
 	Mountain* shortestPath(std::string&, std::string&);		//returns a mountain because it is used for trace-back via previous attribute.
-																//required overload in HashMap because of the hash-lookup
+	//required overload in HashMap because of the hash-lookup
 
 protected:
 private:
 	//I might move this back into protected of hashtable_perfect later
 	//I'd rather not break my program right now though
-	HashTable_Perfect<Mountain>** hashTable;
+	//just kidding, it was already broken
+	HashTable_Perfect<HashTable_Perfect<Mountain>>** hashTable;
 };
 
 #endif //MOUNTAIN_H

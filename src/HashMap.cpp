@@ -19,7 +19,7 @@ Edge::Edge(Mountain* destination, double& in_weight) {
 Edge::~Edge() {
 	if (next != nullptr)
 		delete next;
-};
+}
 
 
 //MOUNTAIN
@@ -53,7 +53,7 @@ Mountain::Mountain(int& in_rank, std::string& in_name, double& in_elevation, std
 	distance = MAX_DISTANCE;
 }
 
-Mountain::~Mountain() {};
+Mountain::~Mountain() {}
 
 
 Graph::Graph() {
@@ -109,11 +109,10 @@ void Graph::BFTraversal(std::string& start_Mountain) {
 
 }
 
-
 //HASHMAP
 HashMap::HashMap() {
-	hashTable = new HashTable_Perfect<Mountain>*[PRIMARY_SIZE];
-	for (unsigned int i = 0; i < PRIMARY_SIZE; i++) {
+	hashTable = new HashTable_Perfect<HashTable_Perfect<Mountain>>*[4];
+	for (unsigned int i = 0; i < 4; i++) {
 		hashTable[i] = nullptr;
 	}
 }
