@@ -71,14 +71,14 @@ int main(int argc, char* argv[]) {
 	int select = -1;
 	while (select != 9) {
 		cout << " =====Menu======" << endl
-			<< "1. " << endl
-			<< "2. " << endl
-			<< "3. " << endl
-			<< "4. " << endl
+			<< "1. Print contents" << endl
+			<< "2. Get mountain location" << endl
+			<< "3. Add Mountain" << endl
+			<< "4. Add Mountain Edge" << endl
 			<< "5. " << endl
 			<< "6. " << endl
-			<< "7. " << endl
-			<< "8. " << endl
+			<< "7. Add  all edges" << endl
+			<< "8. Display mountain edges" << endl
 			<< "9. Quit" << endl;
 		cout << " <#>: ";
 		cin >> select;

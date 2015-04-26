@@ -152,6 +152,9 @@ public:
 		return this->hashTable[key];
 	}
 
+	//friend ostream&<<(os&, HashMap*)	//add later, no time now
+										//also add one for Mountain for when [][]is up and running
+
 	Mountain** hashTable;
 protected:
 	unsigned int subSize;
