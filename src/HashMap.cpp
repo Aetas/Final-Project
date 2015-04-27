@@ -100,13 +100,12 @@ void Graph::reset_visited() {	//resets the visited tracker for traversal algorit
 //-----------------------//
 HashTable::HashTable() {
 	subSize = 0;
-	hashTable = new Mountain*[17];	//17 is just the second table size. 4 * 17 = 68 > 53
 	for (unsigned int i = 0; i < 17; i++) {
-		hashTable[i] = nullptr;
+		hashTable_Secondary[i] = nullptr;
 	}
 }
 HashTable::~HashTable() {
-	delete[]hashTable;
+	//delete hashTable_Secondary;
 }
 
 void HashTable::printContents(int index) {
@@ -114,12 +113,12 @@ void HashTable::printContents(int index) {
 		return;			//really it should throw an error, but that can be added later
 	}
 	for (unsigned int i = 0; i < 17; i++) {
-		if (hashTable[i] == nullptr)	//if the location is empty, skip.
+		if (hashTable_Secondary[i] == nullptr)	//if the location is empty, skip.
 			continue;
 		std::cout << "(" << index << "," << i << ") :"	//else print all the information
-			<< hashTable[i]->rank << ":" << hashTable[i]->name << ":" << hashTable[i]->elevation << ":"
-			<< hashTable[i]->coordinates.latitude << " " << hashTable[i]->coordinates.N_S << ","
-			<< hashTable[i]->coordinates.latitude << " " << hashTable[i]->coordinates.E_W << std::endl;
+			<< hashTable_Secondary[i]->rank << ":" << hashTable_Secondary[i]->name << ":" << hashTable_Secondary[i]->elevation << ":"
+			<< hashTable_Secondary[i]->coordinates.latitude << " " << hashTable_Secondary[i]->coordinates.N_S << ","
+			<< hashTable_Secondary[i]->coordinates.latitude << " " << hashTable_Secondary[i]->coordinates.E_W << std::endl;
 	}
 }
 //-------------------------------//
@@ -127,14 +126,12 @@ void HashTable::printContents(int index) {
 //-------------------------------//
 HashTable_Perfect::HashTable_Perfect() {
 	size = 0;
-	hashTable = new HashTable*[4];
-	//for (int i = 0; i < 4; i++) {
-	//	hashTable[i]->hashTable = new Mountain*[17];
-	//}
+	for (int i = 0; i < 4; i++) {
+		hashTable[i] = new HashTable;
+	}
 }
-
 HashTable_Perfect::~HashTable_Perfect() {
-	delete[]hashTable;
+
 }
 
 void HashTable_Perfect::printContents() {
@@ -148,13 +145,13 @@ void HashTable_Perfect::printContents() {
 
 Mountain* HashTable_Perfect::getMountain(std::string& in_name) {
 	Keys k = populateKeys(in_name);
-	if (in_name != hashTable[k[0]]->hashTable[k[1]]->name)
+	if (in_name != hashTable[k[0]]->hashTable_Secondary[k[1]]->name)
 		return nullptr;	//doesn't exist
-	return this->hashTable[k[0]]->hashTable[k[1]];	//if it returns nullptr, the mountain doesn't exist. 
+	return this->hashTable[k[0]]->hashTable_Secondary[k[1]];	//if it returns nullptr, the mountain doesn't exist. 
 }
 
 Mountain* HashTable_Perfect::getMountain(Keys& k) {	//this version of the function has no guarantee that it will return the right thing, just whatever was hashed to the same place.
-	return this->hashTable[k[0]]->hashTable[k[1]];
+	return this->hashTable[k[0]]->hashTable_Secondary[k[1]];
 }
 
 Keys HashTable_Perfect::populateKeys(std::string& in_name) {
@@ -172,13 +169,17 @@ Keys HashTable_Perfect::populateKeys(std::string& in_name) {
 //---------------------//
 //~~~~~~~HASHMAP~~~~~~~//
 //---------------------//
-HashMap::HashMap() {}	//defects to the inherited constructors
+HashMap::HashMap() {
+
+}
 HashMap::~HashMap() {}	//defects to inherited desrtuctors
+
+void HashMap::buildHash() {}
 
 void HashMap::insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew) {
 	Mountain* mountain = new Mountain(in_rank, in_name, in_elevation, in_range, in_lat, ns, in_long, ew);
 	Keys k = populateKeys(in_name);
-	hashTable[k[0]]->hashTable[k[1]] = mountain;	//make sure this works. Pointers, man.
+	hashTable[k[0]]->hashTable_Secondary[k[1]] = mountain;	//make sure this works. Pointers, man.
 	vertices.push_back(mountain);	//add to graph
 	hashTable[k[0]]->subSize++;	//update sub-hash size
 	size++;						//update sub-hash size
@@ -186,24 +187,24 @@ void HashMap::insertMountain(int& in_rank, std::string& in_name, double& in_elev
 
 void HashMap::deleteMountain(std::string& in_name) {
 	Keys k = populateKeys(in_name);
-	if (hashTable[k[1]]->hashTable[k[2]] != nullptr) {	//make sure there is actually somehting there before trying to delete
-		delete this->hashTable[k[0]]->hashTable[k[1]];
+	if (hashTable[k[1]]->hashTable_Secondary[k[2]] != nullptr) {	//make sure there is actually somehting there before trying to delete
+		delete this->hashTable[k[0]]->hashTable_Secondary[k[1]];
 		hashTable[k[0]]->subSize--;	//update sub-hash size
 		size--;						//update sub-hash size
 	}
 }
 
 bool HashMap::mountainExists(Keys& lookup) {
-	return (this->hashTable[lookup[0]]->hashTable[lookup[1]] != nullptr);
+	return (this->hashTable[lookup[0]]->hashTable_Secondary[lookup[1]] != nullptr);
 }
 bool HashMap::mountainExists(Keys& lookup, std::string& match_name) {
-	if (hashTable[lookup[0]]->hashTable[lookup[1]]->name != match_name)
+	if (hashTable[lookup[0]]->hashTable_Secondary[lookup[1]]->name != match_name)
 		return false;
-	return (this->hashTable[lookup[0]]->hashTable[lookup[1]] != nullptr);
+	return (this->hashTable[lookup[0]]->hashTable_Secondary[lookup[1]] != nullptr);
 }
 
 bool HashMap::is_occupied(Keys& k) {
-	return (this->hashTable[k[0]]->hashTable[k[1]] != nullptr);
+	return (this->hashTable[k[0]]->hashTable_Secondary[k[1]] != nullptr);
 }
 
 //this version of addEdge calculates the difference in the coordinates.
@@ -213,28 +214,28 @@ void HashMap::addEdge(Keys& origin, Keys& destination) {
 
 	double weight = -1;
 	//this line just finds the difference between the two mountains in the x-plane. Will need to pythag. later.
-	double diff_x = (this->hashTable[origin[0]]->hashTable[origin[1]]->coordinates.longitude - this->hashTable[destination[0]]->hashTable[destination[1]]->coordinates.longitude);
+	double diff_x = (this->hashTable[origin[0]]->hashTable_Secondary[origin[1]]->coordinates.longitude - this->hashTable[destination[0]]->hashTable_Secondary[destination[1]]->coordinates.longitude);
 	//same as above but for y
-	double diff_y = (this->hashTable[origin[0]]->hashTable[origin[1]]->coordinates.latitude - this->hashTable[destination[0]]->hashTable[destination[1]]->coordinates.latitude);
+	double diff_y = (this->hashTable[origin[0]]->hashTable_Secondary[origin[1]]->coordinates.latitude - this->hashTable[destination[0]]->hashTable_Secondary[destination[1]]->coordinates.latitude);
 
 	//use pythag. to compute the distance between. Technically, trig could have been used, but since all values are known, it's not much different.
 	weight = sqrt((pow(diff_x, 2)) + (pow(diff_y, 2)));	//weight = the squart root of the sum of the differences squared.
 
-	Edge* new_edge = new Edge(this->hashTable[destination[0]]->hashTable[destination[1]], weight);
-	this->hashTable[origin[0]]->hashTable[origin[1]]->edge.push_back(new_edge);
+	Edge* new_edge = new Edge(this->hashTable[destination[0]]->hashTable_Secondary[destination[1]], weight);
+	this->hashTable[origin[0]]->hashTable_Secondary[origin[1]]->edge.push_back(new_edge);
 }
 
 void HashMap::addEdge(Keys& origin, Keys& destination, double& weight) {	//before calling this, it always has to be checked if origin and destination exist.
-	Edge* new_edge = new Edge(this->hashTable[destination[0]]->hashTable[destination[1]], weight);
-	this->hashTable[origin[0]]->hashTable[origin[1]]->edge.push_back(new_edge);
+	Edge* new_edge = new Edge(this->hashTable[destination[0]]->hashTable_Secondary[destination[1]], weight);
+	this->hashTable[origin[0]]->hashTable_Secondary[origin[1]]->edge.push_back(new_edge);
 }
 
 Mountain* HashMap::shortestPath(std::string& origin, std::string& destination) {
 	//hash out the locations of the begin/end
 	Keys start = populateKeys(origin);
 	Keys end = populateKeys(destination);
-	Mountain* current = this->hashTable[start[0]]->hashTable[start[1]];
-	Mountain* fin = this->hashTable[end[0]]->hashTable[end[1]];
+	Mountain* current = this->hashTable[start[0]]->hashTable_Secondary[start[1]];
+	Mountain* fin = this->hashTable[end[0]]->hashTable_Secondary[end[1]];
 
 	//Always start with checking if they exist, then get progressively more specific. If range was queried on nullptr it will give invalid access and dump
 	if (current == nullptr) {
@@ -293,8 +294,8 @@ Mountain* HashMap::shotestDistance(std::string& origin, std::string& destination
 	//hash out the locations of the begin/end
 	Keys start = populateKeys(origin);
 	Keys end = populateKeys(destination);
-	Mountain* current = this->hashTable[start[0]]->hashTable[start[1]];
-	Mountain* fin = this->hashTable[end[0]]->hashTable[end[1]];
+	Mountain* current = this->hashTable[start[0]]->hashTable_Secondary[start[1]];
+	Mountain* fin = this->hashTable[end[0]]->hashTable_Secondary[end[1]];
 
 	//Always start with checking if they exist, then get progressively more specific. If range was queried on nullptr it will give invalid access and dump
 	if (current == nullptr) {

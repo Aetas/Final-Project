@@ -27,6 +27,7 @@ void readFile(std::ifstream& inFile, HashMap* hm);
 int main(int argc, char* argv[]) {
 
 	HashMap* hashMap = new HashMap;
+	hashMap->buildHash();
 
 	//Read in nodes
 	std::ifstream inFile;
@@ -74,15 +75,15 @@ int main(int argc, char* argv[]) {
 	int select = -1;
 	while (select != 9) {
 		cout << " =====Menu======" << endl
-			<< "1. Print contents" << endl
-			<< "2. Get hash location" << endl		//Since I use this largely to test my hash function, it does not complain if the mountain does not exist. It only returns the location it would be
-			<< "3. Add Mountain" << endl
-			<< "4. Add Mountain Edge" << endl
-			<< "5. Add  all edges" << endl
-			<< "6. Display mountain edges" << endl
-			<< "7. Find shortest path" << endl
-			<< "8. Find shortest distance" << endl
-			<< "9. Quit" << endl;
+			<< " 1. Print contents" << endl
+			<< " 2. Get hash location" << endl		//Since I use this largely to test my hash function, it does not complain if the mountain does not exist. It only returns the location it would be
+			<< " 3. Add Mountain" << endl
+			<< " 4. Add Mountain Edge" << endl
+			<< " 5. Add  all edges" << endl
+			<< " 6. Display mountain edges" << endl
+			<< " 7. Find shortest path" << endl
+			<< " 8. Find shortest distance" << endl
+			<< " 9. Quit" << endl;
 		cout << " <#>: ";
 		cin >> select;
 		if (select == 1) {	//print contents
@@ -209,6 +210,8 @@ void readFile(std::ifstream& inFile, HashMap* hm) {
 	buffer = "";	//easier to make sure no rogue values are kept;
 	while (!inFile.eof()) {
 		getline(inFile, buffer, ',');
+		if (buffer == "")
+			break;
 		rank = std::stoi(buffer);
 		getline(inFile, buffer, ',');
 		name = buffer;
