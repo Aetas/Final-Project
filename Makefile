@@ -2,27 +2,26 @@
 
 #Same as saying CXX
 CC = g++
+CLANG = clang
 CPPFLAGS = -Wall -Werror -std=c++0x
+LLVMFLAGS = -tbd
 OBJ = main.o functions.o header.o
 OUTPUT = HashMap.o
 
 program: 
 	$(CC) $(CPPFLAGS) driver.cpp HashMap.cpp HashMap.h -o $(OUTPUT)
 
-#main.o : driver.cpp functions.o
-#	$(CC) $(CPPFLAGS) -c driver.cpp
+gcc : $(OBJ)
+	$(CC) $(CPPFLAGS) $(OBJ) -o $(OUTPUT)
 
-#functions.o : HashMap.cpp header.o
-#	$(CC) $(CPPFLAGS) -c HashMap.cpp
-
-#header.o : HashMap.h
-#	$(CC) $(CPPFLAGS) -c HashMap.h
+clang : $(OBJ)
+	$(CLANG) $(LLVMFLAGS) -stuff $(OUTPUT)
 
 .PHONY : clean
 clean :
-	rm program
+	rm program gcc clang
 
-# Creates a log to keep track of things changed
-# log : driver.cpp $(OBJ)
-# 	lpt -p $?
-# 	touch log
+ Creates a log to keep track of things changed
+ log : driver.cpp $(OBJ)
+ 	lpt -p $?
+ 	touch log
