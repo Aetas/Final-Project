@@ -138,11 +138,11 @@ int main(int argc, char* argv[]) {
 			cout << endl;
 			Keys orig = hashMap->populateKeys(origin);
 			Keys dest = hashMap->populateKeys(destination);
-			if (!hashMap->mountainExists(orig)) {
+			if (!hashMap->mountainExists(orig, origin)) {
 				cout << " The originating mountain does not exist." << endl;
 				continue;
 			}
-			else  if (!hashMap->mountainExists(dest)) {
+			else  if (!hashMap->mountainExists(dest, destination)) {
 				cout << " The destination mountain does not exist." << endl;
 				continue;
 			}
@@ -152,11 +152,35 @@ int main(int argc, char* argv[]) {
 		if (select == 5) {
 
 		}
-		if (select == 6) {
+		if (select == 6) {	//display specific Mountain edges
+			cout << " Enter mountain name\n"
+				<< " <name>: ";
+			string name;
+			getline(cin, name);
+			cout << endl;
 
+			Keys k = hashMap->populateKeys(name);
+			if (hashMap->mountainExists(k, name)) {
+				hashMap->displayEdges(hashMap->getMountain(k));
+			} 
+			else {
+				cout << " Mountain not found." << endl;
+			}
 		}
-		if (select == 7) {
+		if (select == 7) {	//
+			cout << " Enter starting mountain name\n"
+				<< " <name>: ";
+			string name;
+			getline(cin, name);
+			cout << endl;
 
+			Keys k = hashMap->populateKeys(name);
+			if (hashMap->mountainExists(k, name)) {
+				hashMap->displayEdges(hashMap->getMountain(k));
+			}
+			else {
+				cout << " Mountain not found." << endl;
+			}
 		}
 		if (select == 8) {
 

@@ -45,7 +45,7 @@ struct Keys {
 class Edge {
 public:
 	//construct/destruct
-	Edge() {};
+	Edge();
 	Edge(Mountain* destination, double& in_weight);
 	~Edge();
 
@@ -61,7 +61,6 @@ class Mountain {
 public:
 	//construct/destruct
 	Mountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& NS, double& in_long, char& EW);
-	Mountain(std::string&);	//make with name
 	~Mountain();
 
 	bool have_visited;		//record keeping
@@ -118,6 +117,9 @@ public:
 
 	void printContents();
 
+	Mountain* getMountain(std::string& in_name);	//return mountian by name
+	Mountain* getMountain(Keys& k);					//return mountain by key
+
 	Keys populateKeys(std::string& in_name);
 
 	template<typename K>
@@ -155,9 +157,9 @@ public:
 	//friend ostream&<<(os&, HashMap*)	//add later, no time now
 										//also add one for Mountain for when [][]is up and running
 
+	unsigned int subSize;
 	Mountain** hashTable;
 protected:
-	unsigned int subSize;
 private:
 };
 
@@ -175,9 +177,17 @@ public:
 	void addEdge(Keys& origin, Keys& destination);
 	void addEdge(Keys& origin, Keys& destination, double& weight);
 
+	//I thought about making a version of this that takes a string argument but the idea would be to avoid generating keys.
+	//However, since the first thing that would happen in a string-argument version would be to generate the keys, it really achieved nothing.
+	//The only real difference is that they keys are made in main() before calling it, or made in the function after calling it.
+	//on top of that, if it returns true, then I need the keys in main() anyhow.
 	bool mountainExists(Keys& lookup);
+	//I lied above. I want to make sure the names match.
+	bool mountainExists(Keys& lookup, std::string& match_name);
+	//to check for collision
+	bool is_occupied(Keys& k);
 
-	Mountain* findMountain(std::string& in_name);
+
 	Mountain* shortestPath(std::string&, std::string&);		//returns a mountain because it is used for trace-back via previous attribute.
 															//required overload in HashMap because of the hash-lookup
 	Mountain* shotestDistance(std::string& origin, std::string& destination);
