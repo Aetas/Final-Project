@@ -3,26 +3,24 @@
 #Same as saying CXX
 CC = g++
 CPPFLAGS = -Wall -Werror -std=c++0x
-OBJ = main.o functions.o
+OBJ = main.o functions.o header.o
 OUTPUT = HashMap.o
-ODIR = ./bin
-PROJ_DIR = $(HOME)/home/aetas/gitrepos/final
 
-vpath = %.h  $(PROJ_DIR)/include
-vpath = %.cpp $(PROJ_DIR)/src
+program: 
+	$(CC) $(CPPFLAGS) driver.cpp HashMap.cpp HashMap.h -o $(OUTPUT)
 
-program: $(OBJ)
-	$(CC) $(CPPFLAGS) $(OBJ) -o $(ODIR)
+#main.o : driver.cpp functions.o
+#	$(CC) $(CPPFLAGS) -c driver.cpp
 
-main.o : ./src/driver.cpp ./include/HashMap.h
-	$(CC) $(CPPFLAGS) -c
+#functions.o : HashMap.cpp header.o
+#	$(CC) $(CPPFLAGS) -c HashMap.cpp
 
-functions.o : ./src/HashMap.cpp ./include/HashMap.h
-	$(CC) $(CPPFLAGS) -c
+#header.o : HashMap.h
+#	$(CC) $(CPPFLAGS) -c HashMap.h
 
 .PHONY : clean
 clean :
-	rm program $(OBJ)
+	rm program
 
 # Creates a log to keep track of things changed
 # log : driver.cpp $(OBJ)
