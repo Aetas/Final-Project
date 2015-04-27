@@ -71,6 +71,7 @@ Type `g++ --version` and make sure -std=c++0x or -std=c++1 [is supported](https:
 From the base cloned directory copy in... `g++ -Wall -Werror -std=c++0x ./src/driver.cpp ./src/HashTable.cpp ./include/HashTable.h -o HashTable.o`
 #### Unix-like - Clang
 TBA
+Type `clang --version` into the terminal and check the version to make sure basic c++11 [is supported](http://clang.llvm.org/cxx_status.html). 
 
 #### Unix-like - Make
 Navigate into the cloned directory from terminal and type `Make`
