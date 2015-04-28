@@ -100,13 +100,13 @@ void Graph::reset_visited() {	//resets the visited tracker for traversal algorit
 //-----------------------//
 HashTable::HashTable() {
 	subSize = 0;
-	for (unsigned int i = 0; i < 4; i++) {
+	for (unsigned int i = 0; i < 17; i++) {
 		hashTable_Secondary[i] = nullptr;
 	}
 	std::cout << "HT" << std::endl;
 }
 HashTable::~HashTable() {
-	//delete hashTable_Secondary;
+
 }
 
 void HashTable::printContents(int index) {
@@ -128,7 +128,7 @@ void HashTable::printContents(int index) {
 HashTable_Perfect::HashTable_Perfect() {
 	size = 0;
 	for (int i = 0; i < 4; i++) {
-		hashTable[4] = new HashTable;
+		hashTable[i] = new HashTable;
 	}
 	std::cout << "HT_P" << std::endl;
 }
@@ -162,8 +162,8 @@ Keys HashTable_Perfect::populateKeys(std::string& in_name) {
 	for (unsigned int i = 0; i < in_name.size(); i++)
 		sum += in_name[i];
 
-	k.key[0] = sum % 4;			//first table size
-	k.key[1] = sum % 17;		//second table size
+	k.key[0] = sum % 4;		//first table size
+	k.key[1] = sum % 17;	//second table size
 
 	return k;
 };
@@ -179,10 +179,16 @@ HashMap::~HashMap() {
 
 }	//defects to inherited desrtuctors
 
+void HashMap::buildHash() {
+	for (int i = 0; i < 4; i++) {
+		hashTable[4] = new HashTable;
+	}
+}
+
 void HashMap::insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew) {
 	Mountain* mountain = new Mountain(in_rank, in_name, in_elevation, in_range, in_lat, ns, in_long, ew);
 	Keys k = populateKeys(in_name);
-	this->hashTable[k[0]]->hashTable_Secondary[k[1]] = mountain;	//make sure this works. Pointers, man.
+	hashTable[k[0]]->hashTable_Secondary[k[1]] = mountain;	//make sure this works. Pointers, man.
 	vertices.push_back(mountain);	//add to graph
 	hashTable[k[0]]->subSize++;	//update sub-hash size
 	size++;						//update sub-hash size

@@ -126,6 +126,7 @@ public:
 	HashTable* operator[](K key) {
 		return this->hashTable[key];
 	}
+	
 protected:
 	HashTable* hashTable[4];
 	unsigned int size;		//this will be the overall/total size. Thus inherited into HashMap
@@ -173,6 +174,8 @@ public:
 	HashMap();
 	~HashMap();
 
+	void buildHash();
+
 	void insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew);
 	void deleteMountain(std::string& in_name);
 	void addEdge(Keys& origin, Keys& destination);
@@ -187,7 +190,6 @@ public:
 	bool mountainExists(Keys& lookup, std::string& match_name);
 	//to check for collision. Really just a debugging utillity
 	bool is_occupied(Keys& k);
-
 
 	Mountain* shortestPath(std::string&, std::string&);		//returns a mountain because it is used for trace-back via previous attribute.
 															//required overload in HashMap because of the hash-lookup
