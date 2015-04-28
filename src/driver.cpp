@@ -27,8 +27,6 @@ void readFile(std::ifstream& inFile, HashMap* hm);
 int main(int argc, char* argv[]) {
 
 	HashMap* hashMap = new HashMap;
-	hashMap->buildHash();
-
 	//Read in nodes
 	std::ifstream inFile;
 	if (argc > 1) {
@@ -92,6 +90,7 @@ int main(int argc, char* argv[]) {
 		if (select == 2) {	//get hash location
 			cout << " Enter mountain name\n"
 				<< " <name>: ";
+			cin.ignore(10000, '\n');
 			std::string name;
 			getline(cin, name);
 			Keys k = hashMap->populateKeys(name);
@@ -103,6 +102,7 @@ int main(int argc, char* argv[]) {
 			int rank = 0;
 			double elevation = 0, latitude = 0, longitude = 0;
 			char N_S = ' ', E_W = ' ';
+			cin.ignore(10000, '\n');
 			cout << " Enter rank\n"				//rank
 				<< " <#>: ";
 			cin >> rank;
@@ -130,6 +130,7 @@ int main(int argc, char* argv[]) {
 		if (select == 4) {	//add mountain edge
 			cout << " Enter origin mountain\n"
 				<< " <name>: ";
+			cin.ignore(10000, '\n');
 			string origin = "";
 			getline(cin, origin);
 			cout << endl << " Enter destination mountain\n"
@@ -156,6 +157,7 @@ int main(int argc, char* argv[]) {
 		if (select == 6) {	//display specific Mountain edges
 			cout << " Enter mountain name\n"
 				<< " <name>: ";
+			cin.ignore(10000, '\n');
 			string name;
 			getline(cin, name);
 			cout << endl;
@@ -171,6 +173,7 @@ int main(int argc, char* argv[]) {
 		if (select == 7) {	//
 			cout << " Enter starting mountain name\n"
 				<< " <name>: ";
+			cin.ignore(10000, '\n');
 			string name;
 			getline(cin, name);
 			cout << endl;

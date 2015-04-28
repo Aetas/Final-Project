@@ -126,8 +126,8 @@ public:
 	HashTable* operator[](K key) {
 		return this->hashTable[key];
 	}
-	HashTable* hashTable[4];
 protected:
+	HashTable* hashTable[4];
 	unsigned int size;		//this will be the overall/total size. Thus inherited into HashMap
 private:
 };
@@ -150,7 +150,7 @@ public:
 
 	template<typename K>
 	Mountain* operator[](K key) {
-		return this->hashTable[key];
+		return this->hashTable_Secondary[key];
 	}
 
 	//friend ostream&<<(os&, HashMap*)	//add later, no time now
@@ -173,8 +173,6 @@ public:
 	HashMap();
 	~HashMap();
 
-	void buildHash();
-
 	void insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew);
 	void deleteMountain(std::string& in_name);
 	void addEdge(Keys& origin, Keys& destination);
@@ -187,7 +185,7 @@ public:
 	bool mountainExists(Keys& lookup);
 	//I lied above. I want to make sure the names match.
 	bool mountainExists(Keys& lookup, std::string& match_name);
-	//to check for collision
+	//to check for collision. Really just a debugging utillity
 	bool is_occupied(Keys& k);
 
 

@@ -1,12 +1,11 @@
 //NOTE: THIS IS GOING TO BE BROKEN FOR A VERY LONG TIME
 //This is essentially a copy-paste from assignemnt 8 with almost no variation until I rewrite all of the functions
 #include<iostream>
-#include<fstream>
 #include<string>
-#include<vector>
-#include<queue>
-#include<math.h>
-#include"HashMap.h"
+#include<vector>	//graph functions
+#include<queue>		//traverse algs.
+#include<math.h>	//edge weight calculations. I would have just written my own power function, but writting a square root function is a bit much
+#include"HashMap.h"	
 
 //------------------//
 //~~~~~~~EDGE~~~~~~~//
@@ -88,6 +87,7 @@ void Graph::BFTraversal() {
 	}
 	reset_visited();	//return to default condition before exit
 }
+//range-string lookup version?
 
 void Graph::reset_visited() {	//resets the visited tracker for traversal algorithms
 	for (std::vector<Mountain*>::iterator it = vertices.begin(); it != vertices.end(); it++) {
@@ -100,9 +100,10 @@ void Graph::reset_visited() {	//resets the visited tracker for traversal algorit
 //-----------------------//
 HashTable::HashTable() {
 	subSize = 0;
-	for (unsigned int i = 0; i < 17; i++) {
+	for (unsigned int i = 0; i < 4; i++) {
 		hashTable_Secondary[i] = nullptr;
 	}
+	std::cout << "HT" << std::endl;
 }
 HashTable::~HashTable() {
 	//delete hashTable_Secondary;
@@ -115,9 +116,9 @@ void HashTable::printContents(int index) {
 	for (unsigned int i = 0; i < 17; i++) {
 		if (hashTable_Secondary[i] == nullptr)	//if the location is empty, skip.
 			continue;
-		std::cout << "(" << index << "," << i << ") :"	//else print all the information
+		std::cout << "(" << index << "," << i << ") : "	//else print all the information
 			<< hashTable_Secondary[i]->rank << ":" << hashTable_Secondary[i]->name << ":" << hashTable_Secondary[i]->elevation << ":"
-			<< hashTable_Secondary[i]->coordinates.latitude << " " << hashTable_Secondary[i]->coordinates.N_S << ","
+			<< hashTable_Secondary[i]->coordinates.latitude << " " << hashTable_Secondary[i]->coordinates.N_S << ", "
 			<< hashTable_Secondary[i]->coordinates.latitude << " " << hashTable_Secondary[i]->coordinates.E_W << std::endl;
 	}
 }
@@ -127,8 +128,9 @@ void HashTable::printContents(int index) {
 HashTable_Perfect::HashTable_Perfect() {
 	size = 0;
 	for (int i = 0; i < 4; i++) {
-		hashTable[i] = new HashTable;
+		hashTable[4] = new HashTable;
 	}
+	std::cout << "HT_P" << std::endl;
 }
 HashTable_Perfect::~HashTable_Perfect() {
 
@@ -161,7 +163,7 @@ Keys HashTable_Perfect::populateKeys(std::string& in_name) {
 		sum += in_name[i];
 
 	k.key[0] = sum % 4;			//first table size
-	k.key[1] = k.key[0] % 17;	//second table size
+	k.key[1] = sum % 17;		//second table size
 
 	return k;
 };
@@ -171,15 +173,16 @@ Keys HashTable_Perfect::populateKeys(std::string& in_name) {
 //---------------------//
 HashMap::HashMap() {
 
-}
-HashMap::~HashMap() {}	//defects to inherited desrtuctors
+}	//defects to inherited constructors
 
-void HashMap::buildHash() {}
+HashMap::~HashMap() {
+
+}	//defects to inherited desrtuctors
 
 void HashMap::insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew) {
 	Mountain* mountain = new Mountain(in_rank, in_name, in_elevation, in_range, in_lat, ns, in_long, ew);
 	Keys k = populateKeys(in_name);
-	hashTable[k[0]]->hashTable_Secondary[k[1]] = mountain;	//make sure this works. Pointers, man.
+	this->hashTable[k[0]]->hashTable_Secondary[k[1]] = mountain;	//make sure this works. Pointers, man.
 	vertices.push_back(mountain);	//add to graph
 	hashTable[k[0]]->subSize++;	//update sub-hash size
 	size++;						//update sub-hash size
