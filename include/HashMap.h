@@ -128,7 +128,7 @@ public:
 	}
 	
 protected:
-	HashTable* hashTable[4];
+	HashTable* hashTable[5];
 	unsigned int size;		//this will be the overall/total size. Thus inherited into HashMap
 private:
 };
@@ -161,8 +161,6 @@ public:
 	Mountain* hashTable_Secondary[17];
 protected:
 private:
-
-
 };
 
 //---------HASHMAP---------//
@@ -173,8 +171,6 @@ class HashMap : public HashTable_Perfect, public Graph {
 public:
 	HashMap();
 	~HashMap();
-
-	void buildHash();
 
 	void insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew);
 	void deleteMountain(std::string& in_name);
