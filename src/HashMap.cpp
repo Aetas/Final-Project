@@ -64,9 +64,17 @@ void Graph::displayEdges(Mountain* mountain) {
 			std::cout << "***" << (*it)->next->name;
 		}
 	}
+	else {
+		std::cout << " No edges to display." << std::endl;
+	}
 }
 void Graph::BFTraversal() {
 	Mountain* current = vertices[0];
+
+	if (current[0].edge.size() < 1) {
+		std::cout << " Please build edges before attempting to traverse." << std::endl;
+		return;
+	}
 
 	std::queue<Mountain*> q;
 
@@ -155,8 +163,9 @@ Mountain* HashTable_Perfect::getMountain(Keys& k) {	//this version of the functi
 Keys HashTable_Perfect::populateKeys(std::string& in_name) {
 	Keys k;
 	int sum = 0;
-	for (unsigned int i = 0; i < in_name.size(); i++)
+	for (unsigned int i = 0; i < in_name.size(); i++)	//basic string sum. Too basic, as it turns out. GNUperf would have been a better route.
 		sum += in_name[i];
+	sum += in_name.size();								// + string length
 
 	k.key[0] = sum % 5;		//first table size
 	k.key[1] = sum % 17;	//second table size
@@ -181,13 +190,14 @@ void HashMap::insertMountain(int& in_rank, std::string& in_name, double& in_elev
 	hashTable[k[0]]->hashTable_Secondary[k[1]] = mountain;
 	vertices.push_back(mountain);	//add to graph
 	hashTable[k[0]]->subSize++;	//update sub-hash size
-	size++;						//update sub-hash size
+	size++;						//update primary size
 }
 
 void HashMap::deleteMountain(std::string& in_name) {
 	Keys k = populateKeys(in_name);
 	if (hashTable[k[1]]->hashTable_Secondary[k[2]] != nullptr) {	//make sure there is actually somehting there before trying to delete
 		delete this->hashTable[k[0]]->hashTable_Secondary[k[1]];
+		hashTable[k[0]]->hashTable_Secondary[k[1]] = nullptr;		//return to null to avoid access violation dumps
 		hashTable[k[0]]->subSize--;	//update sub-hash size
 		size--;						//update sub-hash size
 	}
@@ -201,7 +211,6 @@ bool HashMap::mountainExists(Keys& lookup, std::string& match_name) {
 		return false;
 	return (this->hashTable[lookup[0]]->hashTable_Secondary[lookup[1]] != nullptr);
 }
-
 bool HashMap::is_occupied(Keys& k) {
 	return (this->hashTable[k[0]]->hashTable_Secondary[k[1]] != nullptr);
 }
@@ -209,7 +218,7 @@ bool HashMap::is_occupied(Keys& k) {
 //this version of addEdge calculates the difference in the coordinates.
 void HashMap::addEdge(Keys& origin, Keys& destination) {
 	//technically, this will fail for mountains in different hemispheres, since it does not check for N/S|E/W pairs.
-	//but technically I dont have neough time and will come back to it later. Probably in the dev branch again
+	//but technically I dont have neough time and will come back to it later. Probably in the dev branch. Probably.
 
 	double weight = -1;
 	//this line just finds the difference between the two mountains in the x-plane. Will need to pythag. later.
@@ -224,7 +233,9 @@ void HashMap::addEdge(Keys& origin, Keys& destination) {
 	this->hashTable[origin[0]]->hashTable_Secondary[origin[1]]->edge.push_back(new_edge);
 }
 
-void HashMap::addEdge(Keys& origin, Keys& destination, double& weight) {	//before calling this, it always has to be checked if origin and destination exist.
+//before calling this, it always has to be checked if origin and destination exist
+//which was handled in main(), this is just the tool to get it done, not ask questions aboot it.
+void HashMap::addEdge(Keys& origin, Keys& destination, double& weight) {
 	Edge* new_edge = new Edge(this->hashTable[destination[0]]->hashTable_Secondary[destination[1]], weight);
 	this->hashTable[origin[0]]->hashTable_Secondary[origin[1]]->edge.push_back(new_edge);
 }
@@ -279,6 +290,7 @@ Mountain* HashMap::shortestPath(std::string& origin, std::string& destination) {
 				(*it)->next->distance = current->distance + 1;	//update it's distance to the current distance +  1 edge.
 				(*it)->next->previous = current;				//come to think of it, I don't think this actually works. It looks like I just thought this was a traversal function when I wrote it.
 				q.push((*it)->next);							//I should put dijkstra's function in here with edge distance instead.
+																//not really a point to at the moment since there are no edges to read in. Waste of time until then.
 			}													//Also, it disgusts me that I can spell Dijkstra without thinking now.
 		}
 		current->have_visited = true;
@@ -289,7 +301,7 @@ Mountain* HashMap::shortestPath(std::string& origin, std::string& destination) {
 
 //my one true hate. Dijkstraartighjasdfg-pronunciation.
 //I should have just done a shunting yard algorithm with self-made queues and classes...
-Mountain* HashMap::shotestDistance(std::string& origin, std::string& destination) {
+Mountain* HashMap::shortestDistance(std::string& origin, std::string& destination) {
 	//hash out the locations of the begin/end
 	Keys start = populateKeys(origin);
 	Keys end = populateKeys(destination);
@@ -327,11 +339,12 @@ Mountain* HashMap::shotestDistance(std::string& origin, std::string& destination
 	current->distance = 0;
 	solved.push_back(current);
 
-
+	//This is just a revised version of my old algorithm from reviewing the posted solution. Same as what we learned in class.
 	while (!fin->have_visited) {
 		double minDistance = 9999999;
 		Mountain* minMountain = nullptr, * prevMountain = nullptr;
-		for (std::vector<Mountain*>::iterator it = solved.begin(); it != solved.end(); it++) {
+		for (std::vector<Mountain*>::iterator it = solved.begin(); it != solved.end(); it++) {	//same as a for... i = 0... i++... but proper with iterators from STL
+																								//*it is just the value the iterator is looking at since the iterator itself is removed
 			current = (*it);
 			for (std::vector<Edge*>::iterator jt = (*it)->edge.begin(); jt != (*it)->edge.end(); jt++) {
 				if (!(*jt)->next->have_visited) {
@@ -344,7 +357,7 @@ Mountain* HashMap::shotestDistance(std::string& origin, std::string& destination
 				}
 			}
 		}
-		minMountain->distance = minDistance;
+		minMountain->distance = minDistance;	//update conditions
 		minMountain->previous = prevMountain;
 		minMountain->have_visited = true;
 		solved.push_back(minMountain);

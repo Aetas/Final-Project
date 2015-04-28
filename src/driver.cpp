@@ -8,9 +8,12 @@
 
 	In the saddest sort of way, I did a classic amature mistake of getting carried away with 
 	the fancy implementation options (such as recursively overloading [] to abstract from the hashtable chain)
-	and template inheritance/self inclusion and nesting to make for onely one class.
+	and template inheritance/self inclusion and nesting to make for only one class.
 	And because of it, I ran out of time and had to implement it the simple way to something less than my expectations.
-	I'm going to continue to update it, but it's due in a couple of hours. Lovely.
+	
+	Looking back, this was an extremely simple program to implement as a double array of a single templated<Mountain*> hash class
+	which would have removed the middle men and gone straight for the [] overload I was looking for anyhow.
+	Whoops. Next time.
 */
 
 #include<iostream>
@@ -42,7 +45,6 @@ int main(int argc, char* argv[]) {
 					<< " <name.csv>: ";
 				//cin.ignore(10000, '\n');	//probably going to have to put a bunch of these in the menu loop as per usual. 
 				getline(cin, fileName);
-				cout << endl;
 				inFile.open(fileName.c_str());
 			}
 			readFile(inFile, hashMap);
@@ -50,7 +52,8 @@ int main(int argc, char* argv[]) {
 	}
 	else {	//else no argument was supplied
 		string fileName = "";
-			cout << "\n Please enter the name of the desired CSV file: " << endl;
+		cout << "\n Please enter the name of the desired CSV file\n"
+			<< " <name.csv>: ";
 			getline(cin, fileName);
 			inFile.open(fileName.c_str());
 			if (!inFile.is_open()) {
@@ -62,14 +65,11 @@ int main(int argc, char* argv[]) {
 
 	inFile.close();	//close in the end
 
-	//error handling
-
-
 	//menu
 	// For the menu, I favored what is esentially a ton of if statements over something like a switch 
-	// because variables can declared in if statements, while they cannot in switches. Probably because of RAII or something similar. Switches give stiches. Or something.
-	// Presently I don't know how many things I am going to have this program do, so a bunch of blank templates are in place.
-	// Probably a mixture of assignments 8 & 9
+	// because variables can declared in if statements, while they cannot in switches. Probably because of RAII or something similar. Switches give stiches. Or something. #hashtag
+	// All of the edge options are set up as if they work, and will successfully error back to the menu if selected, but there are presently no edges to compute with. 
+	// Which would bother me more if it wasn't already a nested hashtable
 	int select = -1;
 	while (select != 9) {
 		cout << " =====Menu======" << endl
@@ -84,10 +84,10 @@ int main(int argc, char* argv[]) {
 			<< " 9. Quit" << endl;
 		cout << " <#>: ";
 		cin >> select;
-		if (select == 1) {	//print contents
+		if (select == 1) {	//print contents-----------------------------<
 			hashMap->printContents();
 		}
-		if (select == 2) {	//get hash location
+		if (select == 2) {	//get hash location-----------------------------<
 			cout << " Enter mountain name\n"
 				<< " <name>: ";
 			cin.ignore(10000, '\n');
@@ -97,7 +97,7 @@ int main(int argc, char* argv[]) {
 			cout << "(" << k[0] << "," << k[1] << ") : "
 				<< name << endl;
 		}
-		if (select == 3) {	//add mountain
+		if (select == 3) {	//add mountain-----------------------------<
 			string name = "", range = "";
 			int rank = 0;
 			double elevation = 0, latitude = 0, longitude = 0;
@@ -127,7 +127,7 @@ int main(int argc, char* argv[]) {
 			cout << endl;
 			hashMap->insertMountain(rank, name, elevation, range, latitude, N_S, longitude, E_W);
 		}
-		if (select == 4) {	//add mountain edge
+		if (select == 4) {	//add mountain edge-----------------------------<
 			cout << " Enter origin mountain\n"
 				<< " <name>: ";
 			cin.ignore(10000, '\n');
@@ -154,7 +154,7 @@ int main(int argc, char* argv[]) {
 		if (select == 5) {
 
 		}
-		if (select == 6) {	//display specific Mountain edges
+		if (select == 6) {	//display specific Mountain edges-----------------------------<
 			cout << " Enter mountain name\n"
 				<< " <name>: ";
 			cin.ignore(10000, '\n');
@@ -167,29 +167,75 @@ int main(int argc, char* argv[]) {
 				hashMap->displayEdges(hashMap->getMountain(k));
 			} 
 			else {
-				cout << " Mountain not found." << endl;
+				cout << " Mountain not matched." << endl;
 			}
 		}
-		if (select == 7) {	//Find shortest path
+		if (select == 7) {	//Find shortest path-----------------------------<
 			cout << " Enter starting mountain name\n"
 				<< " <name>: ";
 			cin.ignore(10000, '\n');
-			string name;
-			getline(cin, name);
+			string origin, destination;
+			getline(cin, origin);
+			cout << " Enter ending location\n"
+				<< " <name: ";
+			getline(cin, destination);
+			cout << endl;
 			cout << endl;
 
-			Keys k = hashMap->populateKeys(name);
-			if (hashMap->mountainExists(k, name)) {
-				hashMap->displayEdges(hashMap->getMountain(k));
+			Keys k = hashMap->populateKeys(origin);
+			if (hashMap->mountainExists(k, origin)) {
+				Mountain* fin = hashMap->shortestPath(origin, destination);
+				if (fin != nullptr)	{	//function returns null if there was an error
+					cout << fin->distance;
+					std::vector<Mountain*> read;	//vector purely for reading back the path.
+					while (fin != nullptr) {	//follow until the end...
+						read.push_back(fin);
+						fin = fin->previous;
+					}
+					while (!read.empty()) {		//while it still has things to read.
+						cout << "," << read.back()->name;
+						read.pop_back();
+					}
+					cout << endl;
+				}
 			}
 			else {
 				cout << " Mountain not found." << endl;
 			}
 		}
-		if (select == 8) {	//find shortest distance
+		if (select == 8) {	//find shortest distance-----------------------------<
+			cout << " Enter starting mountain name\n"
+				<< " <name>: ";
+			cin.ignore(10000, '\n');
+			string origin, destination;
+			getline(cin, origin);
+			cout << " Enter ending location\n"
+				<< " <name: ";
+			getline(cin, destination);
+			cout << endl;
 
+			Keys k = hashMap->populateKeys(origin);
+			if (hashMap->mountainExists(k, origin)) {
+				Mountain* fin = hashMap->shortestDistance(origin, destination);
+				if (fin != nullptr) {	//function returns null if there was an error
+					cout << fin->distance;
+					std::vector<Mountain*> read;	//vector purely for reading back the path.
+					while (fin != nullptr) {	//follow until the end...
+						read.push_back(fin);
+						fin = fin->previous;
+					}
+					while (!read.empty()) {		//while it still has things to read.
+						cout << "," << read.back()->name;
+						read.pop_back();
+					}
+					cout << endl;
+				}
+			}
+			else {
+				cout << " Mountain not found." << endl;
+			}
 		}
-		if (select == 9) {	//quit
+		if (select == 9) {	//quit-----------------------------<
 			cout << " Goodbye!" << endl;
 		}
 		if (select > 9) {
@@ -204,7 +250,7 @@ void readFile(std::ifstream& inFile, HashMap* hm) {
 	//FILE STRUCTURE:
 	//Rank,Peak name, Elevation, Range, Latitude, Longitude
 	//Ex: "39,Sunlight Peak,14059,San Juan,37.6274,N,107.5959,W"
-
+	cout << " ...";
 	string buffer = "", name = "", range = "";
 	int rank = 0;
 	double elevation = 0, latitude = 0, longitude = 0;
@@ -235,4 +281,5 @@ void readFile(std::ifstream& inFile, HashMap* hm) {
 		// Would take O(2+e) if e is the number of edges to be added as opposed to O(e) if done here.
 		hm->insertMountain(rank, name, elevation, range, latitude, N_S, longitude, E_W);
 	}
+	cout << "read successful!" << endl << endl;
 }
