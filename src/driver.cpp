@@ -168,7 +168,7 @@ int main(int argc, char* argv[]) {
 				cout << " Mountain not found." << endl;
 			}
 		}
-		if (select == 7) {	//
+		if (select == 7) {	//Find shortest path
 			cout << " Enter starting mountain name\n"
 				<< " <name>: ";
 			string name;
@@ -183,10 +183,10 @@ int main(int argc, char* argv[]) {
 				cout << " Mountain not found." << endl;
 			}
 		}
-		if (select == 8) {
+		if (select == 8) {	//find shortest distance
 
 		}
-		if (select == 9) {
+		if (select == 9) {	//quit
 			cout << " Goodbye!" << endl;
 		}
 		if (select > 9) {
