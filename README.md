@@ -71,7 +71,7 @@ Type `g++ --version` and make sure -std=c++0x or -std=c++1 [is supported](https:
 From the base cloned directory copy in... `g++ -Wall -Werror -std=c++0x ./src/driver.cpp ./src/HashTable.cpp ./include/HashTable.h -o HashTable.o`
 #### Unix-like - Clang
 TBA
-Type `clang --version` into the terminal and check the version to make sure basic c++11 [is supported](http://clang.llvm.org/cxx_status.html). 
+Type `clang --version` into the terminal and check the version to make sure basic c++11 [is supported](http://clang.llvm.org/cxx_status.html).
 
 #### Unix-like - Make
 Navigate into the cloned directory from terminal and type `Make`
@@ -86,7 +86,7 @@ Yours truly
 - There are probably a veritable s***-load hiding. Some of the 'bugs' (if they can be called that since it's by design) are simply coded to be circumvented purely because it's a functionality that is not supported. Nor was it really intended to be, but I might revisit it later.
 
 ### Contributing
-There are a few things I try to maintain in my code...
+Just a few things that might make the structure of my code more understandable. Read if you will.
 - Name spaces are never declared in implementation or header files, 'std::<command>' is preferred
 - Memory is never allocated in a header file. Which can be hard to follow with the next point
 - Templated functions and classes remain in the header files with their implementations
@@ -96,4 +96,5 @@ There are a few things I try to maintain in my code...
   * Full names are preferred over abbreviations
   * Caps on every word is preferred in type/container declarations so that the lower case version can be a variable
   * Making at least as many spelling errors as I do is highly encouraged.
+- Declaring containers/variables after all conditions are met. E.g. a queue does not need to be made before it is determined that there is anything to fill it. RAII is also nice practice I suppose.
 - For the most part, I'm just putting this body of text here because I needed to have something down.

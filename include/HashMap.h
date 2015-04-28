@@ -90,13 +90,13 @@ public:
 
 	//by name
 	virtual Mountain* shortestPath(std::string&, std::string&) = 0;		//returns a mountain because it is used for trace-back via previous attribute.
-	virtual Mountain* shotestDistance(std::string& origin, std::string& destination) = 0;	//same as above. And below
+	virtual Mountain* shortestDistance(std::string& origin, std::string& destination) = 0;	//same as above. And below
 	virtual void addEdge(Keys& origin, Keys& destination, double& weight) = 0;	//pure vitrual, graph itself does not actually have access to what it needs. (Which is the hashTable lookup)
 	void displayEdges(Mountain*);
 	void BFTraversal();
 
 protected:
-	void reset_visited();	//protected because why not
+	void reset_visited();	//protected largely because this is only used, and should only be used, in internal functions.
 	std::vector<Mountain*> vertices;
 private:
 };
@@ -120,14 +120,17 @@ public:
 	Mountain* getMountain(std::string& in_name);	//return mountian by name
 	Mountain* getMountain(Keys& k);					//return mountain by key
 
-	Keys populateKeys(std::string& in_name);
+	Keys populateKeys(std::string& in_name);		//populate a key pair
 
 	template<typename K>
 	HashTable* operator[](K key) {
 		return this->hashTable[key];
 	}
-	HashTable* hashTable[4];
+	
 protected:
+	//this is not a 'dynamic' allocation on the heap (in the form of HashTable** hashTable) because of how the constructors interact with inheritance. 
+	//the class 'internals' are not created until the final construction pass. Lots of seg fault/invalid access until then.
+	HashTable* hashTable[5];
 	unsigned int size;		//this will be the overall/total size. Thus inherited into HashMap
 private:
 };
@@ -146,39 +149,35 @@ public:
 		return (subSize == 0);
 	}
 
+	//cleaner than writing everything in HT_Perfect, and it keeps the functions simple and clean. + abstraction.
 	void printContents(int index);
 
+	//Presently, this works but not as I envisioned it. Needs some work to return nodes from key pairs on either 'this[1][2]' or 'hashMap[1][2]'
+	//It does eventually return the desired value through recursion though
 	template<typename K>
 	Mountain* operator[](K key) {
-		return this->hashTable[key];
+		return this->hashTable_Secondary[key];
 	}
 
 	//friend ostream&<<(os&, HashMap*)	//add later, no time now
-										//also add one for Mountain for when [][]is up and running
 
 	unsigned int subSize;
 	Mountain* hashTable_Secondary[17];
 protected:
 private:
-
-
 };
 
 //---------HASHMAP---------//
-//to template... or not to template...
-//I'm removing the template bit for now because the descision is hindering progress. I can always come back and convert/paste in templates if I need to.
-//template<class T>
 class HashMap : public HashTable_Perfect, public Graph {
 public:
 	HashMap();
 	~HashMap();
 
-	void buildHash();
-
+	//it is entirely possible to declare coordinate structs in main() to pass structs to insert with no added complexity... but ultimately no different
 	void insertMountain(int& in_rank, std::string& in_name, double& in_elevation, std::string& in_range, double& in_lat, char& ns, double& in_long, char& ew);
 	void deleteMountain(std::string& in_name);
-	void addEdge(Keys& origin, Keys& destination);
-	void addEdge(Keys& origin, Keys& destination, double& weight);
+	void addEdge(Keys& origin, Keys& destination);					//calculates weight
+	void addEdge(Keys& origin, Keys& destination, double& weight);	//input weight - largely bloat from legacy
 
 	//I thought about making a version of this that takes a string argument but the idea would be to avoid generating keys.
 	//However, since the first thing that would happen in a string-argument version would be to generate the keys, it really achieved nothing.
@@ -187,13 +186,12 @@ public:
 	bool mountainExists(Keys& lookup);
 	//I lied above. I want to make sure the names match.
 	bool mountainExists(Keys& lookup, std::string& match_name);
-	//to check for collision
+	//to check for collision. Really just a debugging utillity
 	bool is_occupied(Keys& k);
-
 
 	Mountain* shortestPath(std::string&, std::string&);		//returns a mountain because it is used for trace-back via previous attribute.
 															//required overload in HashMap because of the hash-lookup
-	Mountain* shotestDistance(std::string& origin, std::string& destination);
+	Mountain* shortestDistance(std::string& origin, std::string& destination);
 protected:
 private:
 };
