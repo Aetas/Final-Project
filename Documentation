@@ -1,1 +1,33 @@
-Presently, the header file is a better document than this garbage.
+General Functions and structs:
+Edge:
+The edge holds the same purpose it had in the other graphs. Holds edge weight and the destination.
+
+Mountain:
+A vertex in the graph sense, and a node in the hashtable sense. Instead of movies, I chose to hold 14ers as data so it has much of the same data in it.
+Contains a vector of edges to other mountains, as well as a coordinates struct to wrap all the data up.
+
+Keys:
+The key class was really just a way to shortcut and abstract a bunch of seemingly unrelated integers that are used to access elements in the data structure.
+Holding only two values, it boasts all of two functions and they're both overloads used to make the program more clear.
+The assignment operator (=) takes in a key and just matches the values the argument to the original key. Copy constructor, really.
+The subscripting operator ([]) was overloaded so a key can be used such as: Key[0] rather than Key->key[0]. Both work, one is just faster and more clear.
+
+Main data structure functions:
+Graph:
+The graph is the same in every sense to the graph from assignment 8, except for the fact that functions that required a conversion from string to mountain node are declared pure virtual and defined in HashMap to make use of O(1) access.
+  displayEdges()
+    Display edges is used to print all of the edges leaving from a given mountain.
+    Since it is passed the mountain directly, there is no need to check if it exists.
+    However, if the size of the edge vector is 0, the program prints no edges to display and breaks out of the function.
+    Printing the edges is done with a simple for loop and an iterator.
+  BFTraversal()
+    The breadth-first traversal with no argument starts at vertex 0 and follows the edges along until all nodes have been visited.
+    The first thing it does is check for edges on the vertex and exits with a statement if it finds none.
+    Otherwise it creates a queue that stores all unvisited connected nodes and cycles through the queue, exploring each stored node's edges, pushing any unvisited nodes into the queue.
+
+  reset_visited()
+    Reset visited is a utility function that I wrote to make sure every graph function starts out under the same conditions.
+    If any of the nodes have been previously visited and not reset after the function terminates, it will give false results.
+    Simply loops through the vector with an iterator and sets all to false.
+
+HashTable_Perfect
