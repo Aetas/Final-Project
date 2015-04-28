@@ -2,45 +2,32 @@
 
 #Same as saying nothing
 CXX = g++
-CLANG = clang
+CLANG = clang++
 CXXFLAGS = -Wall -Werror -std=c++0x
-LLVMFLAGS = -Werror -Weverything -std=c++11
-OBJGCC = header_gcc.o functions_gcc.o driver_gcc.o
-OBJLLVM = header_clang.o functions_clang.o driver_clang.o
+LLVMFLAGS = -Weverything -std=c++11 -stdlib=libc++
+OBJ = HashMap.h HashMap.cpp driver.cpp
 OUTPUT = HashMap.o
 
 vpath %.h ./include
 vpath %.cpp ./include
 
-gcc : allgcc
+gcc : $(OBJ)
+	$(CXX) $(CXXFLAGS) -o $(OUTPUT) $(OBJ)
 
-allgcc : ./include/HashMap.h ./src/HashMap.cpp ./src/driver.cpp
-	$(CC) $(CXXFLAGS) ./include/HashMap.h ./src/HashMap.cpp ./src/driver.cpp -o $(OUTPUT)
+#Nope.
+clang : $(OBJ)
+	$(CLANG) $(LLVMFLAGS) $(OBJ) -o $(OUTPUT)
 
+# Ignore these. Just playing around with clang's error messages. Nothing to see here.
+header.o : HashMap.h
+	$(CLANG) $(LLVMFLAGS) -c
 
-#gcc : $(OBJGCC)
-#	$(CC) $(CXXFLAGS) $(OBJGCC) -o $(OUTPUT) $(OBJGCC)
+fn.o : HashMap.h HashMap.cpp
+	$(CLANG) $(LLVMFLAGS) -c
 
-clang : $(OBJCLANG)
-	$(CLANG) $(LLVMFLAGS) $(OBJCLANG) -o $(OUTPUT)
+drive.o : driver.cpp HashMap.h HashMap.cpp
+	$(CLANG) $(LLVMFLAGS) -c
 
-driver_gcc.o : driver.cpp header_gcc.o functions_gcc.o
-	$(CC) $(CXXFLAGS) -c
-
-functions_gcc.o : HashMap.cpp header_gcc.o
-	$(CC) $(CXXFLAGS) -c
-
-header_gcc.o : HashMap.h
-	$(CC) $(CXXFLAGS) -c 
-
-driver_clang.o : driver.cpp header_gcc.o functions_gcc.o
-	$(CC) $(CXXFLAGS) -c
-
-functions_clang.o : HashMap.cpp header_gcc.o
-	$(CC) $(CXXFLAGS) -c
-
-header_clang.o : HashMap.h
-	$(CC) $(CXXFLAGS) -c 
 
 .PHONY : clean
 clean :
