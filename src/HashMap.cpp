@@ -196,6 +196,8 @@ void HashMap::insertMountain(int& in_rank, std::string& in_name, double& in_elev
 void HashMap::deleteMountain(std::string& in_name) {
 	Keys k = populateKeys(in_name);
 	if (hashTable[k[1]]->hashTable_Secondary[k[2]] != nullptr) {	//make sure there is actually somehting there before trying to delete
+		if (hashTable[k[1]]->hashTable_Secondary[k[2]]->name != in_name)
+			return;
 		delete this->hashTable[k[0]]->hashTable_Secondary[k[1]];
 		hashTable[k[0]]->hashTable_Secondary[k[1]] = nullptr;		//return to null to avoid access violation dumps
 		hashTable[k[0]]->subSize--;	//update sub-hash size
