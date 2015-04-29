@@ -10,6 +10,8 @@ Runs fine. No problems that have been found. Time constraints and stubbornness s
 This program takes a comma separated value (.csv or any text files that are comma delim'd) document of colorado 14ers and builds a graph around it.
 However, since the weakness of a graph is it's O(n) access times, I merged a graph with a hashtable to reduce the access/modify times. But since a hash table can approach O(n) time depending on the hash function and table size, I opted for a 'perfect' hash table to make access O(1) constant.
 
+GNUPerf would have saved me a lot of trouble a week ago.
+
 
 ### How To Run
 Clone into `https://github.com/Aetas/Prince-CSCI2270-FinalProject` and compile. (instructions below)

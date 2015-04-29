@@ -31,3 +31,81 @@ The graph is the same in every sense to the graph from assignment 8, except for 
     Simply loops through the vector with an iterator and sets all to false.
 
 HashTable_Perfect
+The HashTable_Perfect (HT_P) class is the top-level hashtable class that handles all the data management.
+It contains an array of the secondary hashtable, which is mostly a contained with upkeep functions inside of it.
+Since HT_P is the upper level container, it has all of the upkeep and management functions within it, which are then inherited into HashMap : public.
+It's variables are declared in protected so that they can be inherited.
+  size_of()
+    returns unsigned int size. No requirements, since size is initialized to 0.
+  is_empty()
+    One return line "size == 0" to return true or false - empty is the former. No requirements.
+  printContents()
+    Cycles through the upper hash table, calling the secondary hash table's print function.
+    If the size of the hash table is 0, it prints "empty" and exits.
+  getMountain()
+    This function comes in two flavors, both return a pointer to the queried mountain, but one uses a string to hash the location and return it and the other uses a Key pair passed to it.
+    Since the key version only passes where a mountain will be if it is in the hashtable, it has no way to check if it is the right mountain to return, so it returns it anyways.
+    The string overload checks the names and returns nullptr if they do not match. A return of nullptr is equivalent of "Does not exist".
+    The key method is largely in place because I found I often needed the key pair in main() (or elsewhere), so checking for the mountain existence, or simply knowing it is there, was cheaper than generating one out of range.
+  populateKeys()
+    This is the hash function. Since there are two keys for every mountain, I had it take a name and return a Keys object, which is precisely why I overloaded the assignment operator.
+    Hashes according to first table size, and then second based off of the ASCII sum and the string length.
+    Intentionally does not mod. the first key, since it often led to a large number of mountains getting mapped to the early slots.
+  operator[]()
+    This was an early effort that I have not yet given up on for bypassing long addressing and return styles.
+    The idea was that "hashMap[key.1][key.2]" (or *this[key.1][key.2])could be used instead of this->hashTable[i]->hashTable_Secondary[j];
+    But as it is largely for fun, I left it for later to develop properly. Currently it requires 4 recursive calls to get ot a mountain, which is slightly vexing.
+
+HashTable
+The HashTable (HT) class was made when I failed to make a self templated HashTable_Perfect class (The idea was to have HashTable_Perfect<HashTable_Perfect<Mountain*>> make itself. Nope.) in time for Sunday.
+It's current function is to store the mountains passed to it from the upper hashtable class, and pass them back when asked. It's nothing special, it even has some functions removed.
+Everything is in public because it resides in protected of HashTable_Perfect anyhow.
+  size_of()
+    Exact same as the other hashtable function, just inlined and returns the sub-array size.
+  is_empty()
+    Exact same as the other hashtable function, just inlined and returns the true if the sub-array is empty.
+  printContents()
+    This function is an extension of the printContents from the upper hashtable.
+    It takes it's array value passed from the other print function and suppliments it's own index to print out the key pair, followed by all of the mountain's data.
+    If any index is found to be empty, it skips over the index and continues. No pre-existing requirements as it will skip everything if there are no mountains in the table.
+
+HashMap
+The last class is the HashMap. This is the class that inherits from both Graph and HashTable_Perfect. It only derives from HashTable_Perfect of the two HashTable classes because that is the controlling class for both of them.
+HashMap is designed to act as both of it's parent classes, which is why it inherits from both. The class comes with a few development utilities as well.
+  insertMountain()
+    Again, this is overloaded from Graph to take advantage of the constant time hash lookup.
+  deleteMountain()
+    This takes a string, hashes out a location, deletes it, and changes that location to nullptr. After that, it decrements size to maintain the size control properties.
+    If the string supplied does not match the name of the location hashed then it returns without changing anything.
+  addEdge() - weight and no weight
+    addEdge is overloaded for +1. One of the functions takes the origin mountain, the destination mountain, and the edge weight, building the edge with the latter two and then pushing it into the edge vector on the origin mountain.
+    The second version of addEdge takes only the origin and destination mountains and builds the weight from their coordinates.
+    This function is the whole reason the large math library is compiled with this program, because it uses the Pythagorean theorem to make a hypotenuse distance from lat and long.
+    This is largely done in two steps, with everything is better explained in the .cpp file.
+    The gist of it is that two variables, diff_x & diff_y, are created to store the difference in lat and long, then square, add, and root.
+    Pre-function condition is that any mountain added is in the same hemisphere, since it does not check the direction, just the number. Since this is a program around CO, it doesn't really bother me since that is not this program's intent.
+  mountainExists() string match and no string match
+    This comes in two variants again, one with a key pair and string name argument, the other with only a key pair.
+    The difference is that one checks the names passed with the name in the keyed location and returns false if they do not match, then returning yes if the location is occupied.
+    The other simply checks if the location the mountain would be in is pointing to something.
+  is_occupied()
+    This function is mostly a debugging utility for checking indexes by key pair.
+    Returns true if the location is null, false otherwise.
+  shortestPath()
+    shortest path algorithm by string names.
+    Starts by running the strings through the hash function and setting origin and destination to the key locations.
+    Then it goes through a bunch of checks in decreasing importance. If either origin or destination are null, then it prints x does not exist and returns.
+    After that it checks if the ranges are the same and returns if they are not, with a print message saying so.
+    Last, it checks for edges - returning if it finds none with a similar print message.
+    After that it is just the same shortest path algorithm we have been using.
+    More detail is commented in the .cpp file.
+  shortestDistance()
+    Dijkstra's algorithm by string names.
+    Starts by running the strings through the hash function and setting origin and destination to the key locations.
+    Then it goes through a bunch of checks in decreasing importance. If either origin or destination are null, then it prints x does not exist and returns.
+    After that it checks if the ranges are the same and returns if they are not, with a print message saying so.
+    Last, it checks for edges - returning if it finds none with a similar print message.
+    After that it is just the same shortest distance algorithm we have been using.
+    More detail is commented in the .cpp file.
+
+I should have just used GNUPerf for the hash function. Still might.
