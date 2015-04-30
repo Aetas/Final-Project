@@ -127,9 +127,9 @@ public:
 		return this->hashTable[key];
 	}
 	//WIP
-	Mountain* operator[](Keys k) {
-		return hashTable[k[0]]->hashTable_Secondary[k[1]];
-	}
+//	Mountain* operator[](Keys k) {
+//		return hashTable[k[0]]->hashTable_Secondary[k[1]];
+//	}
 	
 protected:
 	//this is not a 'dynamic' allocation on the heap (in the form of HashTable** hashTable) because of how the constructors interact with inheritance. 
