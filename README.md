@@ -65,9 +65,9 @@ git clone https://github.com/Aetas/Prince-CSCI2270-FinalProject
 cd ./Prince-CSCI2270-FinalProject
 sh build.sh
 cd ./bin
-make gcc
+make
 ```
-Run the program by typing `./HashMap.o` or `./HashMap.o 14ers.csv`
+Run the program by typing `./HashMap.out` or `./HashMap.out 14ers.csv`
 
 * If any of the steps say there is no executable to run then run `sudo chmod u+x ./file_name` on it.
 
@@ -94,7 +94,7 @@ Yours truly
 - TBA
 
 ### Contributing
-Just a few things that might make the structure of my code more understandable. Read if you will. Or don't. That's just as good.
+Just a few things that might make the structure of my code more understandable. Read if you will. Or don't. That's just as good, honestly.
 - Name spaces are never declared in implementation or header files, 'std::<command>' is preferred
 - Memory is never allocated in a header file. Which can be hard to follow with the next point
 - Templated functions and classes remain in the header files with their implementations
