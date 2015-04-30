@@ -94,7 +94,7 @@ Yours truly
 - TBA
 
 ### Contributing
-Just a few things that might make the structure of my code more understandable. Read if you will.
+Just a few things that might make the structure of my code more understandable. Read if you will. Or don't. That's just as good.
 - Name spaces are never declared in implementation or header files, 'std::<command>' is preferred
 - Memory is never allocated in a header file. Which can be hard to follow with the next point
 - Templated functions and classes remain in the header files with their implementations
