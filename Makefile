@@ -5,14 +5,22 @@ CXX = g++
 CLANG = clang++
 CXXFLAGS = -Wall -Werror -std=c++0x
 LLVMFLAGS = -Weverything -std=c++11 -stdlib=libc++
-OBJ = HashMap.h HashMap.cpp driver.cpp
-OUTPUT = HashMap.o
+OBJ = HashMap.o driver.o
+OUTPUT = HashMap.out
 
 vpath %.h ./include
 vpath %.cpp ./include
 
+all : gcc
+
 gcc : $(OBJ)
 	$(CXX) $(CXXFLAGS) -o $(OUTPUT) $(OBJ)
+
+driver.o : driver.cpp HashMap.h
+	$(CXX) $(CXXFLAGS) -c driver.cpp
+
+HashMap.o : HashMap.cpp HashMap.h
+	$(CXX) $(CXXFLAGS) -c HashMap.cpp
 
 #Nope.
 clang : $(OBJ)
