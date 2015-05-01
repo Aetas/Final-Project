@@ -41,6 +41,9 @@ drive.o : driver.cpp HashMap.h HashMap.cpp
 clean :
 	rm *.o
 
+uninstall :
+	rm *.out
+
 # Creates a log to keep track of things changed
  #log : driver.cpp $(OBJ)
  #	lpt -p $?
