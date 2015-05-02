@@ -18,7 +18,7 @@ Clone into `https://github.com/Aetas/Prince-CSCI2270-FinalProject` and compile. 
 
 In the terminal, run `HashMap.out` to start the program without specifying a file.
 
-To start the program with the program specified, run `HashMap.out 14ers.csv`.
+To start the program with the data file specified, run `HashMap.out 14ers.csv`.
 
 If the file is not found, it is likely not in the same directory as the executable, in which case either put them in the same directory or run `HashMap.out ../path/to/dir/14ers.csv`.
 
