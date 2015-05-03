@@ -10,7 +10,7 @@ Runs fine. No problems that have been found. Time constraints and stubbornness s
 This program takes a comma separated value (.csv or any text files that are comma delim'd) document of colorado 14ers and builds a graph around it.
 However, since the weakness of a graph is it's O(n) access times, I merged a graph with a hashtable to reduce the access/modify times. But since a hash table can approach O(n) time depending on the hash function and table size, I opted for a 'perfect' hash table to make access O(1) constant.
 
-`binary-write` is a helper program I wrote to keep down on the file processing manpower needed to initialize the HashMap. The program takes in a csv file and spits out a binary file of the correct type, and a readme documentation file with the binary file structure.
+`binary-write` is a helper program I wrote to keep down the file processing manpower needed to initialize the HashMap. The program takes in a csv file and spits out a binary file of the correct type, and a readme documentation file with the binary file structure.
 
 GNUPerf would have saved me a lot of trouble a week ago.
 
