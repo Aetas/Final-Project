@@ -72,7 +72,7 @@ Run the program by typing `./HashMap.out` or `./HashMap.out 14ers.csv`
 * If any of the steps say there is no executable to run then run `sudo chmod u+x ./file_name` on it.
 
 #### Windows
-1. Windows has a version of unix-make that I have never used but should work fine. Just make sure all the files are in the same directory, as windows doesn't fare well with bash scripts. Then run `make gcc` as per usual.
+1. Windows has a version of unix-make that I have never used but should work fine. Just make sure all the files are in the same directory, as windows doesn't fare well with bash scripts. Then run `make` as per usual.
 
 2. Compile with visual studio as a project. Set header path to the `HashMap.h` location or write `#include"../include/HashMap.h`
 
