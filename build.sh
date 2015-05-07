@@ -3,7 +3,7 @@
 cp ./Makefile ./bin/
 cp -v src/driver.cpp bin/
 cp -v src/HashMap.cpp bin/
-cp -v include/HashMap.h bin/
+cp -v src/headers/HashMap.h bin/
 cp -v docs/14ers.csv bin/
 
 #for file in *.cpp; do
