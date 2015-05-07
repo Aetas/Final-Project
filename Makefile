@@ -8,8 +8,8 @@ LLVMFLAGS = -Weverything -std=c++11 -stdlib=libc++
 OBJ = HashMap.o driver.o
 OUTPUT = HashMap.out
 
-vpath %.h ./include
-vpath %.cpp ./include
+vpath %.h ./src/headers
+vpath %.cpp ./src
 
 all : gcc
 
