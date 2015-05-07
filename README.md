@@ -10,6 +10,8 @@ Runs fine. No problems that have been found. Time constraints and stubbornness s
 This program takes a comma separated value (.csv or any text files that are comma delim'd) document of colorado 14ers and builds a graph around it.
 However, since the weakness of a graph is it's O(n) access times, I merged a graph with a hashtable to reduce the access/modify times. But since a hash table can approach O(n) time depending on the hash function and table size, I opted for a 'perfect' hash table to make access O(1) constant.
 
+`binary-write` is a helper program I wrote to keep down the file processing manpower needed to initialize the HashMap. The program takes in a csv file and spits out a binary file of the correct type, and a readme documentation file with the binary file structure.
+
 GNUPerf would have saved me a lot of trouble a week ago.
 
 
@@ -19,6 +21,8 @@ Clone into `https://github.com/Aetas/Prince-CSCI2270-FinalProject` and compile. 
 In the terminal, run `HashMap.out` to start the program without specifying a file.
 
 To start the program with the data file specified, run `HashMap.out 14ers.csv`.
+
+If you compiled a binary file from binary-write, replace `14ers.csv` with `14ers.bin` as an argument for `HashMap.out`.
 
 If the file is not found, it is likely not in the same directory as the executable, in which case either put them in the same directory or run `HashMap.out ../path/to/dir/14ers.csv`.
 
@@ -83,6 +87,15 @@ Run the program by typing `./HashMap.out` or `./HashMap.out 14ers.csv`
 Unfortunately I do not have much experience with clang to give detailed instructions.
 
 There are some commented out lines in the make file surrounding clang, but I never game them an honest effort.
+
+#### Compile and run binary-write
+Navigate to the `./binary-write` directory and follow the commands:
+```
+sh build.sh
+cd ./bin
+make
+```
+`binary-write` has two argument options available, `-v` for vertex file, and `-e` for edge file. If no option is given, user is prompted for the type. If no file is given, just follow the prompts in the terminal. To run without interfacing with the program, type `binary-write -v 14ers.csv` or `binary-write -e edge.csv`.
 
 ### Group Members
 Yours truly
