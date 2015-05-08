@@ -53,7 +53,7 @@ sudo yum install make
 ```
 ... will likely get you where you need to be if all else fails.
 
-`sudo yum list | grep Make*` works wonders as well.
+`yum list | grep Make*` works wonders as well.
 
 ### System Requirements
 A terminal environment. 32 or 64 bit, though there shouldn't be any reason 16 wouldn't work. Probably.
