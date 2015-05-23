@@ -1,4 +1,5 @@
-# Final-Project <!-- [Build Status](https://github.com/aetas/Prince-CSCI2270-FinalProject) -->
+# Final-Project 
+<!-- [Build Status](https://github.com/aetas/Prince-CSCI2270-FinalProject) -->
 
 #### In defense of multiple inheritance
 I chose to use a class (HashMap) that utilizes multiple inheritance (of Graph and HashTable) over composition based on the idea that HashMap is expected to function like both a graph and a hash table in every sense, choosing which structure to favor based on strengths. In other words, HashMap is expected to have the ability to be used in place of a graph or hash table in every application, lending to inheritance.
